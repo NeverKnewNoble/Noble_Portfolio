@@ -44,7 +44,7 @@ export default function Navbar() {
   return (
     <div className='fixed top-0 left-0 right-0 z-50 flex justify-center pt-2 sm:pt-3 px-2 sm:px-4 md:px-6 lg:px-8'>
       {/* Pill-shaped navbar container */}
-      <header className={`w-full max-w-4xl bg-black/80 backdrop-blur-md border border-white/10 shadow-lg transition-all duration-300 rounded-md md:rounded-full ${
+      <header className={`w-full max-w-2xl bg-black/80 backdrop-blur-md border border-white/10 shadow-lg transition-all duration-300 rounded-md md:rounded-full ${
         isOpen ? 'rounded-lg' : ''
       }`}>
         <div className='px-4 sm:px-5 md:px-6'>

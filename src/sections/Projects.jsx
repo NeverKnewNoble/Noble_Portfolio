@@ -83,7 +83,7 @@ export default function Projects() {
           scrub: 1,
           snap: {
             snapTo: 1 / (projectCards.length - 1),
-            duration: { min: 0.1, max: 0.1 },
+            duration: { min: 0.2, max: 0.1 },
             delay: 0.0
           },
           // End after scrolling enough to cover all cards

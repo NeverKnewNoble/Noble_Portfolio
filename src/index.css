@@ -40,3 +40,8 @@ html.lenis body {
 .scrollbar-hide {
   scroll-behavior: smooth;
 }
+
+/* Premium gradient effects */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
