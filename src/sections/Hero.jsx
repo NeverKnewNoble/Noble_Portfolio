@@ -33,8 +33,8 @@ export default function Hero() {
         <div className='absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl' />
         <div className='absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-white/5 to-transparent rounded-full blur-3xl' />
 
-        {/* Text Content - Behind the model (like on a wall) - Positioned at top */}
-        <div className='absolute inset-0 flex flex-col items-center justify-start z-0 px-4 sm:px-6 md:px-10 lg:px-10 pt-15 mt-5  md:pt-26'>
+        {/* Text Content - Behind the model (like on a wall) - Centered on mobile, top on desktop */}
+        <div className='absolute inset-0 flex flex-col items-center justify-center md:justify-start z-0 px-4 sm:px-6 md:px-10 lg:px-10 md:pt-26'>
             {/* Greeting with premium styling */}
             <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-2 md:mb-3'>
               <p className='text-sm sm:text-base md:text-lg font-medium text-gray-300 tracking-wide'>

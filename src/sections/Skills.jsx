@@ -1,5 +1,4 @@
 import React from 'react'
-import { Eye } from 'lucide-react'
 
 export default function Skills() {
   // Helper function to get colored logo URL from Iconify CDN (colored icons)
@@ -33,13 +32,22 @@ export default function Skills() {
       description: 'Core language for web development and interactive experiences'
     },
     {
-      name: 'React',
-      logo: getDeviconUrl('react'),
-      color: 'text-cyan-400',
-      bgColor: 'bg-cyan-400/10',
-      borderColor: 'border-cyan-400/30',
+      name: 'Python',
+      logo: getDeviconUrl('python'),
+      color: 'text-green-400',
+      bgColor: 'bg-green-400/10',
+      borderColor: 'border-green-400/30',
+      proficiency: 'Little Versed',
+      description: 'Exploring backend development and automation scripts'
+    },
+    {
+      name: 'SQL',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+      color: 'text-blue-300',
+      bgColor: 'bg-blue-300/10',
+      borderColor: 'border-blue-300/30',
       proficiency: 'Proficient',
-      description: 'Building dynamic, component-based user interfaces'
+      description: 'Structured query language for managing and querying relational databases'
     },
     {
       name: 'Git',
@@ -51,32 +59,22 @@ export default function Skills() {
       description: 'Version control and collaborative development workflows'
     },
     {
-      name: 'Python',
-      logo: getDeviconUrl('python'),
-      color: 'text-green-400',
-      bgColor: 'bg-green-400/10',
-      borderColor: 'border-green-400/30',
-      proficiency: 'Little Versed',
-      description: 'Exploring backend development and automation scripts'
+      name: 'HTML',
+      logo: getDeviconUrl('html5'),
+      color: 'text-orange-500',
+      bgColor: 'bg-orange-500/10',
+      borderColor: 'border-orange-500/30',
+      proficiency: 'Proficient',
+      description: 'Markup language for structuring web content and building semantic layouts'
     },
     {
-      name: 'Three.js',
-      logo: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/threejs/threejs-original.svg',
-      color: 'text-purple-400',
-      bgColor: 'bg-purple-400/10',
-      borderColor: 'border-purple-400/30',
-      proficiency: 'Learning',
-      description: 'Creating immersive 3D web experiences and visualizations'
-    },
-    {
-      name: 'VR',
-      logo: null, // No simple icon for VR, will use Eye icon
-      icon: Eye,
-      color: 'text-pink-400',
-      bgColor: 'bg-pink-400/10',
-      borderColor: 'border-pink-400/30',
-      proficiency: 'Aspiring',
-      description: 'Future focus on virtual reality and immersive technologies'
+      name: 'CSS',
+      logo: getDeviconUrl('css3'),
+      color: 'text-blue-500',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-500/30',
+      proficiency: 'Proficient',
+      description: 'Styling language for designing beautiful and responsive user interfaces'
     }
   ]
 
@@ -121,7 +119,71 @@ export default function Skills() {
       bgColor: 'bg-gray-700/20',
       borderColor: 'border-gray-600/30',
       description: 'Fast, unopinionated web framework for Node.js backends'
+    }
+  ]
+
+  // Libraries data with logo URLs and descriptions
+  const libraries = [
+    {
+      name: 'React',
+      logo: getDeviconUrl('react'),
+      color: 'text-cyan-400',
+      bgColor: 'bg-cyan-400/10',
+      borderColor: 'border-cyan-400/30',
+      description: 'JavaScript library for building dynamic, component-based user interfaces'
     },
+    {
+      name: 'Three.js',
+      logo: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/threejs/threejs-original.svg',
+      color: 'text-purple-400',
+      bgColor: 'bg-purple-400/10',
+      borderColor: 'border-purple-400/30',
+      description: 'JavaScript library for creating immersive 3D web experiences and visualizations'
+    },
+    {
+      name: 'React Three Fiber',
+      logo: getIconifyUrl('skill-icons:react-dark'),
+      color: 'text-cyan-400',
+      bgColor: 'bg-cyan-400/10',
+      borderColor: 'border-cyan-400/30',
+      description: 'React renderer for Three.js that brings declarative syntax to 3D graphics'
+    },
+    {
+      name: 'React Three Drei',
+      logo: getIconifyUrl('skill-icons:react-dark'),
+      color: 'text-emerald-400',
+      bgColor: 'bg-emerald-400/10',
+      borderColor: 'border-emerald-400/30',
+      description: 'Useful helpers and abstractions for React Three Fiber to simplify 3D development'
+    },
+    {
+      name: 'GSAP',
+      logo: getIconifyUrl('mdi:animation-play'),
+      color: 'text-green-400',
+      bgColor: 'bg-green-400/10',
+      borderColor: 'border-green-400/30',
+      description: 'Professional-grade animation library for creating smooth, performant web animations'
+    },
+    {
+      name: 'Lenis',
+      logo: getIconifyUrl('mdi:scroll'),
+      color: 'text-blue-400',
+      bgColor: 'bg-blue-400/10',
+      borderColor: 'border-blue-400/30',
+      description: 'Smooth scrolling library that provides buttery-smooth scroll experiences'
+    },
+    {
+      name: 'Lucide',
+      logo: getIconifyUrl('simple-icons:lucide'),
+      color: 'text-pink-400',
+      bgColor: 'bg-pink-400/10',
+      borderColor: 'border-pink-400/30',
+      description: 'Beautiful & consistent icon toolkit with 1000+ icons for React and other frameworks'
+    }
+  ]
+
+  // Databases data with logo URLs and descriptions
+  const databases = [
     {
       name: 'MongoDB',
       logo: getDeviconUrl('mongodb'),
@@ -157,7 +219,7 @@ export default function Skills() {
         </p>
         <p className='text-sm sm:text-base md:text-lg text-gray-500 text-center max-w-3xl mx-auto font-light leading-relaxed'>
           From frontend frameworks to backend technologies, I continuously expand my toolkit to deliver cutting-edge solutions. 
-          Currently diving deep into Three.js for 3D web experiences and exploring the exciting world of virtual reality development.
+          Currently diving deep into Three.js for 3D web experiences and building scalable applications with modern databases.
         </p>
       </div>
 
@@ -173,42 +235,35 @@ export default function Skills() {
             robust and maintainable codebases.
           </p>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 md:gap-6'>
-          {languages.map((lang, index) => {
-            const IconComponent = lang.icon
-            return (
-              <div
-                key={index}
-                className={`bg-gray-900 border ${lang.borderColor} rounded-2xl p-4 md:p-6 hover:border-opacity-60 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default`}
-              >
-                <div className={`mb-4 ${lang.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center`}>
-                  {lang.logo ? (
-                    <img 
-                      src={lang.logo} 
-                      alt={`${lang.name} logo`}
-                      className='w-8 h-8 md:w-12 md:h-12'
-                    />
-                  ) : (
-                    IconComponent && <IconComponent className={`w-8 h-8 md:w-12 md:h-12 ${lang.color}`} />
-                  )}
-                </div>
-                <h4 className='text-white font-bold text-sm md:text-base mb-1'>
-                  {lang.name}
-                </h4>
-                <span className={`text-xs ${lang.color} font-medium mb-2 block`}>
-                  {lang.proficiency}
-                </span>
-                <p className='text-gray-500 text-xs leading-tight mt-1 hidden sm:block'>
-                  {lang.description}
-                </p>
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
+          {languages.map((lang, index) => (
+            <div
+              key={index}
+              className={`bg-gray-900 border ${lang.borderColor} rounded-2xl p-4 md:p-6 hover:border-opacity-60 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default`}
+            >
+              <div className={`mb-4 ${lang.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center`}>
+                <img 
+                  src={lang.logo} 
+                  alt={`${lang.name} logo`}
+                  className='w-8 h-8 md:w-12 md:h-12'
+                />
               </div>
-            )
-          })}
+              <h4 className='text-white font-bold text-sm md:text-base mb-1'>
+                {lang.name}
+              </h4>
+              <span className={`text-xs ${lang.color} font-medium mb-2 block`}>
+                {lang.proficiency}
+              </span>
+              <p className='text-gray-500 text-xs leading-tight mt-1 hidden sm:block'>
+                {lang.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Frameworks & Tools Section */}
-      <div className='w-full max-w-7xl'>
+      <div className='w-full max-w-7xl mb-16 md:mb-20'>
         <div className='mb-6 md:mb-8'>
           <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 text-center md:text-left'>
             Frameworks & Tools
@@ -219,7 +274,7 @@ export default function Skills() {
             or styling with utility-first CSS, these tools help me deliver high-quality projects efficiently.
           </p>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 md:gap-6'>
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6'>
           {frameworks.map((framework, index) => (
             <div
               key={index}
@@ -237,6 +292,77 @@ export default function Skills() {
               </h4>
               <p className='text-gray-500 text-xs leading-tight hidden sm:block'>
                 {framework.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Libraries Section */}
+      <div className='w-full max-w-7xl mb-16 md:mb-20'>
+        <div className='mb-6 md:mb-8'>
+          <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 text-center md:text-left'>
+            Libraries
+          </h3>
+          <p className='text-gray-400 text-sm md:text-base max-w-3xl font-light leading-relaxed'>
+            Powerful JavaScript libraries that extend functionality and enable specialized features. 
+            These libraries enhance my projects with advanced capabilities, from 3D graphics to complex data visualizations.
+          </p>
+        </div>
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 md:gap-6'>
+          {libraries.map((library, index) => (
+            <div
+              key={index}
+              className={`bg-gray-900 border ${library.borderColor} rounded-2xl p-4 md:p-6 hover:border-opacity-60 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default`}
+            >
+              <div className={`mb-4 ${library.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center`}>
+                <img 
+                  src={library.logo} 
+                  alt={`${library.name} logo`}
+                  className='w-8 h-8 md:w-12 md:h-12'
+                />
+              </div>
+              <h4 className='text-white font-bold text-sm md:text-base mb-2'>
+                {library.name}
+              </h4>
+              <p className='text-gray-500 text-xs leading-tight hidden sm:block'>
+                {library.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Databases Section */}
+      <div className='w-full max-w-7xl'>
+        <div className='mb-6 md:mb-8'>
+          <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 text-center md:text-left'>
+            Databases
+          </h3>
+          <p className='text-gray-400 text-sm md:text-base max-w-3xl font-light leading-relaxed'>
+            Database systems I use to store, manage, and retrieve data efficiently. 
+            From NoSQL solutions for flexible schemas to relational databases for structured data, 
+            I choose the right database technology based on project requirements.
+          </p>
+        </div>
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 md:gap-6'>
+          {databases.map((database, index) => (
+            <div
+              key={index}
+              className={`bg-gray-900 border ${database.borderColor} rounded-2xl p-4 md:p-6 hover:border-opacity-60 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default`}
+            >
+              <div className={`mb-4 ${database.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center`}>
+                <img 
+                  src={database.logo} 
+                  alt={`${database.name} logo`}
+                  className='w-8 h-8 md:w-12 md:h-12'
+                />
+              </div>
+              <h4 className='text-white font-bold text-sm md:text-base mb-2'>
+                {database.name}
+              </h4>
+              <p className='text-gray-500 text-xs leading-tight hidden sm:block'>
+                {database.description}
               </p>
             </div>
           ))}

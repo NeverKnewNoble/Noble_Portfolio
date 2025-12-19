@@ -44,8 +44,11 @@ export default function Projects() {
   const containerRef = useRef(null);
   const cardsContainerRef = useRef(null);
 
-  // Horizontal scroll animation on mount
+  // Horizontal scroll animation on mount - only activate if 4+ projects
   useEffect(() => {
+    // Only enable horizontal scroll if there are 4 or more projects
+    if (projects.length < 4) return;
+
     if (!sectionRef.current || !containerRef.current || !cardsContainerRef.current) return;
 
     // Small delay to ensure DOM is fully rendered
@@ -59,6 +62,9 @@ export default function Projects() {
 
       // Calculate total horizontal distance to scroll through all cards
       const totalWidth = cardsContainer.scrollWidth - container.offsetWidth;
+      
+      // Only proceed if there's actually content to scroll
+      if (totalWidth <= 0) return;
       
       // Calculate scroll distance: use viewport height multiplied by number of cards
       // This ensures each card gets adequate scroll time before moving to next section
@@ -93,7 +99,7 @@ export default function Projects() {
       clearTimeout(timer);
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, []);
+  }, [projects.length]);
 
   return (
     <section id="projects" ref={sectionRef} className='min-h-screen w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-10 md:py-20'>
@@ -113,8 +119,8 @@ export default function Projects() {
       </div>
 
       {/* Projects Container */}
-      <div ref={containerRef} className='p-10  mb-20 min-h-[600px] w-full max-w-7xl overflow-hidden'>
-        <div ref={cardsContainerRef} className='flex gap-8 md:gap-10 pb-4'>
+      <div ref={containerRef} className={`p-10 mb-20 min-h-[600px] w-full max-w-7xl ${projects.length >= 4 ? 'overflow-hidden' : 'overflow-visible'}`}>
+        <div ref={cardsContainerRef} className={`flex gap-8 md:gap-10 pb-4 ${projects.length >= 4 ? '' : 'justify-center flex-wrap'}`}>
           {projects.map((project, index) => (
             <div
               key={index}
