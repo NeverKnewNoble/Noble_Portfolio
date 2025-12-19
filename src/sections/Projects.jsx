@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 // Import images
 import autoformImage from '../assets/images/autoform.png'
 import linkrexImage from '../assets/images/linkrex.png'
+import ticketImage from '../assets/images/ticket.png'
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger)
@@ -21,29 +22,21 @@ export default function Projects() {
       // githubUrl: '#'
     },
     {
+      title: 'TicketEase',
+      description: 'TicketEase is a ticket management system that tracks and resolve support issues.',
+      tech: ['Next.js', 'Tailwind CSS', 'Typescript', 'MongoDB'],
+      image: ticketImage,
+      liveUrl: 'https://linkerex.vercel.app/',
+      githubUrl: 'https://github.com/NeverKnewNoble/TicketEase'
+    },
+    {
       title: 'Linkerex',
       description: 'A Jobsearch system for students trying to get Internships, oart-time jobs and full-time jobs',
       tech: ['Next.js', 'Tailwind CSS', 'Javascript', 'MongoDB'],
       image: linkrexImage,
       liveUrl: 'https://linkerex.vercel.app/',
       // githubUrl: '#'
-    },
-    // {
-    //   title: 'AutoformX',
-    //   description: 'A lightweight Chrome extension that autofills forms with one click.',
-    //   tech: ['Next.js', 'Typescript', 'Tailwind CSS', 'WXT', 'MongoDB', 'Paystack'],
-    //   image: autoformImage,
-    //   liveUrl: 'https://autoformx-onboarding.vercel.app/',
-    //   // githubUrl: '#'
-    // },
-    // {
-    //   title: 'Linkerex',
-    //   description: 'A Jobsearch system for students trying to get Internships, oart-time jobs and full-time jobs',
-    //   tech: ['Next.js', 'Tailwind CSS', 'Javascript', 'MongoDB'],
-    //   image: linkrexImage,
-    //   liveUrl: 'https://linkerex.vercel.app/',
-    //   // githubUrl: '#'
-    // },
+    }
   ]
 
   // Refs for GSAP animation
