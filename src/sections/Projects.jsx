@@ -26,7 +26,7 @@ export default function Projects() {
       description: 'TicketEase is a ticket management system that tracks and resolve support issues.',
       tech: ['Next.js', 'Tailwind CSS', 'Typescript', 'MongoDB'],
       image: ticketImage,
-      liveUrl: 'https://linkerex.vercel.app/',
+      liveUrl: 'https://ticket-ease-two.vercel.app/',
       githubUrl: 'https://github.com/NeverKnewNoble/TicketEase'
     },
     {
