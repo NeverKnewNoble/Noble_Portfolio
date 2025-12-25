@@ -231,7 +231,8 @@ export default function Contact() {
                     className='w-full px-4 py-3 rounded-lg bg-black border border-gray-800 text-white focus:outline-none focus:border-gray-700 transition-colors duration-200'
                   >
                     <option value=''>Select budget...</option>
-                    <option value='under-5k'>Under $5,000</option>
+                    <option value='below-1k'>Below $1,000</option>
+                    <option value='1k-5k'>$1,000 - $5,000</option>
                     <option value='5k-10k'>$5,000 - $10,000</option>
                     <option value='10k-25k'>$10,000 - $25,000</option>
                     <option value='25k-50k'>$25,000 - $50,000</option>
