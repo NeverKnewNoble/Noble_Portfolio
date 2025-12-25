@@ -1,36 +1,51 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, Suspense, lazy } from 'react'
 import Navbar from './sections/Navbar';
 import Hero from './sections/Hero';
-import About from './sections/About';
-import Skills from './sections/Skills';
-import Projects from './sections/Projects';
-import Contact from './sections/Contact';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+// Lazy load sections below the fold for better initial load performance
+const About = lazy(() => import('./sections/About'));
+const Skills = lazy(() => import('./sections/Skills'));
+const Projects = lazy(() => import('./sections/Projects'));
+const Contact = lazy(() => import('./sections/Contact'));
+
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
+// Loading fallback component
+const SectionLoader = () => (
+  <div className='min-h-screen w-full bg-black flex items-center justify-center'>
+    <div className='w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin' />
+  </div>
+);
+
 export default function App() {
   useEffect(() => {
+    // Optimize Lenis smooth scroll with performance settings
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
     });
 
-    // Integrate Lenis with ScrollTrigger
+    // Integrate Lenis with ScrollTrigger for smooth animations
     lenis.on('scroll', ScrollTrigger.update);
 
+    // Use requestAnimationFrame for smooth scrolling
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
-    // Cleanup
+    // Cleanup on unmount
     return () => {
       lenis.destroy();
+      // Clean up any remaining ScrollTrigger instances
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [])
 
@@ -38,10 +53,13 @@ export default function App() {
     <div className='bg-black'>
       <Navbar />
       <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+      {/* Lazy load sections below the fold */}
+      <Suspense fallback={<SectionLoader />}>
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </Suspense>
     </div>
   )
 }

@@ -1,6 +1,113 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Skills() {
+  const sectionRef = useRef(null)
+  const languagesRef = useRef(null)
+  const frameworksRef = useRef(null)
+  const librariesRef = useRef(null)
+  const databasesRef = useRef(null)
+
+  // GSAP animations for skills sections
+  useEffect(() => {
+    if (!sectionRef.current) return
+
+    // Animate languages
+    if (languagesRef.current) {
+      const languageCards = languagesRef.current.querySelectorAll('.skill-card')
+      gsap.fromTo(
+        languageCards,
+        { opacity: 0, y: 30, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'back.out(1.2)',
+          scrollTrigger: {
+            trigger: languagesRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+
+    // Animate frameworks
+    if (frameworksRef.current) {
+      const frameworkCards = frameworksRef.current.querySelectorAll('.skill-card')
+      gsap.fromTo(
+        frameworkCards,
+        { opacity: 0, y: 30, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'back.out(1.2)',
+          scrollTrigger: {
+            trigger: frameworksRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+
+    // Animate libraries
+    if (librariesRef.current) {
+      const libraryCards = librariesRef.current.querySelectorAll('.skill-card')
+      gsap.fromTo(
+        libraryCards,
+        { opacity: 0, y: 30, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'back.out(1.2)',
+          scrollTrigger: {
+            trigger: librariesRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+
+    // Animate databases
+    if (databasesRef.current) {
+      const databaseCards = databasesRef.current.querySelectorAll('.skill-card')
+      gsap.fromTo(
+        databaseCards,
+        { opacity: 0, y: 30, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'back.out(1.2)',
+          scrollTrigger: {
+            trigger: databasesRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
+  }, [])
   // Helper function to get colored logo URL from Iconify CDN (colored icons)
   const getIconifyUrl = (name) => {
     return `https://api.iconify.design/${name}.svg?color=%23ffffff`
@@ -199,11 +306,19 @@ export default function Skills() {
       bgColor: 'bg-blue-400/10',
       borderColor: 'border-blue-400/30',
       description: 'Advanced relational database with powerful features'
+    },
+    {
+      name: 'Supabase',
+      logo: getIconifyUrl('skill-icons:supabase-light'),
+      color: 'text-emerald-400',
+      bgColor: 'bg-emerald-400/10',
+      borderColor: 'border-emerald-400/30',
+      description: 'Open-source Firebase alternative with PostgreSQL backend and real-time features'
     }
   ]
 
   return (
-    <section id="skills" className='min-h-screen w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-20 md:py-32'>
+    <section id="skills" ref={sectionRef} className='min-h-screen w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-20 md:py-32'>
       {/* Section Header */}
       <div className='w-full max-w-7xl mb-16 md:mb-20'>
         <div className='flex justify-center mb-4'>
@@ -235,26 +350,34 @@ export default function Skills() {
             robust and maintainable codebases.
           </p>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
+        <div ref={languagesRef} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
           {languages.map((lang, index) => (
             <div
               key={index}
-              className={`bg-gray-900 border ${lang.borderColor} rounded-2xl p-4 md:p-6 hover:border-opacity-60 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default`}
+              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${lang.borderColor} rounded-2xl p-5 md:p-6 hover:border-opacity-100 hover:shadow-lg hover:shadow-xl transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default relative overflow-hidden`}
             >
-              <div className={`mb-4 ${lang.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center`}>
+              {/* Gradient overlay on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${lang.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
+              
+              {/* Icon container with modern styling */}
+              <div className={`relative mb-4 ${lang.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex items-center justify-center shadow-lg`}>
                 <img 
                   src={lang.logo} 
-                  alt={`${lang.name} logo`}
-                  className='w-8 h-8 md:w-12 md:h-12'
+                  alt={`${lang.name} logo - ${lang.description}`}
+                  className='w-10 h-10 md:w-14 md:h-14 relative z-10'
+                  loading='lazy'
                 />
+                {/* Glow effect */}
+                <div className={`absolute inset-0 ${lang.bgColor} rounded-xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
               </div>
-              <h4 className='text-white font-bold text-sm md:text-base mb-1'>
+              
+              <h4 className='text-white font-bold text-sm md:text-base mb-1 relative z-10'>
                 {lang.name}
               </h4>
-              <span className={`text-xs ${lang.color} font-medium mb-2 block`}>
+              <span className={`text-xs ${lang.color} font-semibold mb-2 block relative z-10`}>
                 {lang.proficiency}
               </span>
-              <p className='text-gray-500 text-xs leading-tight mt-1 hidden sm:block'>
+              <p className='text-gray-400 text-xs leading-tight mt-1 hidden sm:block relative z-10 group-hover:text-gray-300 transition-colors duration-300'>
                 {lang.description}
               </p>
             </div>
@@ -274,23 +397,31 @@ export default function Skills() {
             or styling with utility-first CSS, these tools help me deliver high-quality projects efficiently.
           </p>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6'>
+        <div ref={frameworksRef} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
           {frameworks.map((framework, index) => (
             <div
               key={index}
-              className={`bg-gray-900 border ${framework.borderColor} rounded-2xl p-4 md:p-6 hover:border-opacity-60 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default`}
+              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${framework.borderColor} rounded-2xl p-5 md:p-6 hover:border-opacity-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default relative overflow-hidden`}
             >
-              <div className={`mb-4 ${framework.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center`}>
+              {/* Gradient overlay on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${framework.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
+              
+              {/* Icon container with modern styling */}
+              <div className={`relative mb-4 ${framework.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex items-center justify-center shadow-lg`}>
                 <img 
                   src={framework.logo} 
-                  alt={`${framework.name} logo`}
-                  className='w-8 h-8 md:w-12 md:h-12'
+                  alt={`${framework.name} logo - ${framework.description}`}
+                  className='w-10 h-10 md:w-14 md:h-14 relative z-10'
+                  loading='lazy'
                 />
+                {/* Glow effect */}
+                <div className={`absolute inset-0 ${framework.bgColor} rounded-xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
               </div>
-              <h4 className='text-white font-bold text-sm md:text-base mb-2'>
+              
+              <h4 className='text-white font-bold text-sm md:text-base mb-2 relative z-10'>
                 {framework.name}
               </h4>
-              <p className='text-gray-500 text-xs leading-tight hidden sm:block'>
+              <p className='text-gray-400 text-xs leading-tight hidden sm:block relative z-10 group-hover:text-gray-300 transition-colors duration-300'>
                 {framework.description}
               </p>
             </div>
@@ -309,23 +440,31 @@ export default function Skills() {
             These libraries enhance my projects with advanced capabilities, from 3D graphics to complex data visualizations.
           </p>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 md:gap-6'>
+        <div ref={librariesRef} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
           {libraries.map((library, index) => (
             <div
               key={index}
-              className={`bg-gray-900 border ${library.borderColor} rounded-2xl p-4 md:p-6 hover:border-opacity-60 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default`}
+              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${library.borderColor} rounded-2xl p-5 md:p-6 hover:border-opacity-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default relative overflow-hidden`}
             >
-              <div className={`mb-4 ${library.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center`}>
+              {/* Gradient overlay on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${library.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
+              
+              {/* Icon container with modern styling */}
+              <div className={`relative mb-4 ${library.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex items-center justify-center shadow-lg`}>
                 <img 
                   src={library.logo} 
-                  alt={`${library.name} logo`}
-                  className='w-8 h-8 md:w-12 md:h-12'
+                  alt={`${library.name} logo - ${library.description}`}
+                  className='w-10 h-10 md:w-14 md:h-14 relative z-10'
+                  loading='lazy'
                 />
+                {/* Glow effect */}
+                <div className={`absolute inset-0 ${library.bgColor} rounded-xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
               </div>
-              <h4 className='text-white font-bold text-sm md:text-base mb-2'>
+              
+              <h4 className='text-white font-bold text-sm md:text-base mb-2 relative z-10'>
                 {library.name}
               </h4>
-              <p className='text-gray-500 text-xs leading-tight hidden sm:block'>
+              <p className='text-gray-400 text-xs leading-tight hidden sm:block relative z-10 group-hover:text-gray-300 transition-colors duration-300'>
                 {library.description}
               </p>
             </div>
@@ -345,23 +484,31 @@ export default function Skills() {
             I choose the right database technology based on project requirements.
           </p>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 md:gap-6'>
+        <div ref={databasesRef} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
           {databases.map((database, index) => (
             <div
               key={index}
-              className={`bg-gray-900 border ${database.borderColor} rounded-2xl p-4 md:p-6 hover:border-opacity-60 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default`}
+              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${database.borderColor} rounded-2xl p-5 md:p-6 hover:border-opacity-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default relative overflow-hidden`}
             >
-              <div className={`mb-4 ${database.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center`}>
+              {/* Gradient overlay on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${database.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
+              
+              {/* Icon container with modern styling */}
+              <div className={`relative mb-4 ${database.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex items-center justify-center shadow-lg`}>
                 <img 
                   src={database.logo} 
-                  alt={`${database.name} logo`}
-                  className='w-8 h-8 md:w-12 md:h-12'
+                  alt={`${database.name} logo - ${database.description}`}
+                  className='w-10 h-10 md:w-14 md:h-14 relative z-10'
+                  loading='lazy'
                 />
+                {/* Glow effect */}
+                <div className={`absolute inset-0 ${database.bgColor} rounded-xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
               </div>
-              <h4 className='text-white font-bold text-sm md:text-base mb-2'>
+              
+              <h4 className='text-white font-bold text-sm md:text-base mb-2 relative z-10'>
                 {database.name}
               </h4>
-              <p className='text-gray-500 text-xs leading-tight hidden sm:block'>
+              <p className='text-gray-400 text-xs leading-tight hidden sm:block relative z-10 group-hover:text-gray-300 transition-colors duration-300'>
                 {database.description}
               </p>
             </div>
