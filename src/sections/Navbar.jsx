@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Menu, X, Github, Twitter } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 export default function Navbar() {
   // Mobile menu open/close state
@@ -8,9 +8,10 @@ export default function Navbar() {
   // Simple nav items; update hrefs to match your sections/route ids
   const navItems = [
     { label: 'Home', href: '#home' },
+    { label: 'Projects', href: '#projects' },
     { label: 'About', href: '#about' },
     { label: 'Skills', href: '#skills' },
-    { label: 'Projects', href: '#projects' },
+    { label: 'Showcase', href: '#showcase' },
     { label: 'Contact', href: '#contact' },
   ]
 
@@ -70,27 +71,6 @@ export default function Navbar() {
                   {item.label}
                 </a>
               ))}
-              {/* Social Links - Desktop */}
-              <div className='flex items-center gap-2 ml-2 pl-2 border-l border-white/10'>
-                <a
-                  href='https://github.com/NeverKnewNoble'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  aria-label='GitHub'
-                  className='rounded-full p-2 text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200'
-                >
-                  <Github className='w-4 h-4' />
-                </a>
-                <a
-                  href='https://x.com/404noble?s=21'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  aria-label='X (Twitter)'
-                  className='rounded-full p-2 text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200'
-                >
-                  <Twitter className='w-4 h-4' />
-                </a>
-              </div>
             </nav>
 
             {/* Mobile menu toggle button - pill shaped */}
@@ -132,34 +112,6 @@ export default function Navbar() {
                 {item.label}
               </a>
             ))}
-            {/* Social Links - Mobile */}
-            <div className={`flex items-center justify-center gap-4 pt-4 border-t border-white/10 mt-4 transform ${
-              isOpen 
-                ? 'translate-x-0 opacity-100' 
-                : '-translate-x-4 opacity-0'
-            }`}
-            style={{
-              transitionDelay: isOpen ? `${navItems.length * 50}ms` : '0ms'
-            }}>
-              <a
-                href='https://github.com/NeverKnewNoble'
-                target='_blank'
-                rel='noopener noreferrer'
-                aria-label='GitHub'
-                className='rounded-full p-3 text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center'
-              >
-                <Github className='w-5 h-5' />
-              </a>
-              <a
-                href='https://x.com/404noble?s=21'
-                target='_blank'
-                rel='noopener noreferrer'
-                aria-label='X (Twitter)'
-                className='rounded-full p-3 text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center'
-              >
-                <Twitter className='w-5 h-5' />
-              </a>
-            </div>
           </nav>
         </div>
       </header>

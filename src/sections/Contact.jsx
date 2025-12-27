@@ -125,7 +125,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className='min-h-screen w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-20 md:py-32'>
-      <div className='w-full max-w-6xl'>
+      <div className='w-full max-w-7xl'>
         {/* Section Header */}
         <div className='mb-16 md:mb-20'>
           <div className='flex justify-center mb-4'>

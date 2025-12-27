@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Code, Zap, Palette, Smartphone, Globe, Database, Users, MessageSquare, GitBranch, Award, Target, TrendingUp, ArrowRight } from 'lucide-react'
+import { Code, Zap, Palette, Smartphone, Globe, Database, Users, MessageSquare, GitBranch, Award, Target, TrendingUp } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -29,32 +29,38 @@ export default function About() {
     {
       icon: Users,
       title: 'Collaboration',
-      description: 'Experienced in working with cross-functional teams, pair programming, and contributing to open-source projects. Strong believer in knowledge sharing and mentorship.'
+      description: 'Experienced in working with cross-functional teams, pair programming, and contributing to open-source projects. Strong believer in knowledge sharing and mentorship.',
+      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: MessageSquare,
       title: 'Client Communication',
-      description: 'Skilled at translating technical concepts into clear, actionable insights for stakeholders. Proven track record of managing client expectations and delivering on time.'
+      description: 'Skilled at translating technical concepts into clear, actionable insights for stakeholders. Proven track record of managing client expectations and delivering on time.',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: GitBranch,
       title: 'Agile Methodologies',
-      description: 'Proficient in Scrum and Kanban workflows. Experienced with sprint planning, daily standups, and iterative development cycles that ensure continuous delivery.'
+      description: 'Proficient in Scrum and Kanban workflows. Experienced with sprint planning, daily standups, and iterative development cycles that ensure continuous delivery.',
+      image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Target,
       title: 'Problem Solving',
-      description: 'Analytical thinker who breaks down complex challenges into manageable solutions. Strong debugging skills and systematic approach to troubleshooting.'
+      description: 'Analytical thinker who breaks down complex challenges into manageable solutions. Strong debugging skills and systematic approach to troubleshooting.',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: TrendingUp,
       title: 'Continuous Learning',
-      description: 'Committed to staying current with industry trends and emerging technologies. Regularly contribute to tech communities and attend conferences.'
+      description: 'Committed to staying current with industry trends and emerging technologies. Regularly contribute to tech communities and attend conferences.',
+      image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Award,
       title: 'Quality Focus',
-      description: 'Dedicated to writing clean, maintainable code and following best practices. Strong advocate for testing, code reviews, and documentation.'
+      description: 'Dedicated to writing clean, maintainable code and following best practices. Strong advocate for testing, code reviews, and documentation.',
+      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop&q=80'
     }
   ]
 
@@ -63,32 +69,38 @@ export default function About() {
     {
       icon: Code,
       title: 'Full-Stack Development',
-      description: 'Building scalable web applications with modern frameworks and technologies, from frontend to backend.'
+      description: 'Building scalable web applications with modern frameworks and technologies, from frontend to backend.',
+      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Zap,
       title: 'Performance Optimization',
-      description: 'Optimizing applications for speed and efficiency, ensuring fast load times and smooth user experiences.'
+      description: 'Optimizing applications for speed and efficiency, ensuring fast load times and smooth user experiences.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Palette,
       title: 'UI/UX Design',
-      description: 'Creating beautiful, intuitive interfaces that prioritize user experience and modern design principles.'
+      description: 'Creating beautiful, intuitive interfaces that prioritize user experience and modern design principles.',
+      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Smartphone,
       title: 'Responsive Design',
-      description: 'Developing mobile-first applications that work seamlessly across all devices and screen sizes.'
+      description: 'Developing mobile-first applications that work seamlessly across all devices and screen sizes.',
+      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Globe,
       title: 'Web Technologies',
-      description: 'Expert in React, Three.js, and modern web standards to create cutting-edge digital experiences.'
+      description: 'Expert in React, Three.js, and modern web standards to create cutting-edge digital experiences.',
+      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Database,
       title: 'Backend Solutions',
-      description: 'Designing robust server-side architectures and APIs that power scalable applications.'
+      description: 'Designing robust server-side architectures and APIs that power scalable applications.',
+      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&q=80'
     }
   ]
 
@@ -203,9 +215,9 @@ export default function About() {
   }, [])
 
   return (
-    <section id="about" ref={sectionRef} className='min-h-screen w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-20 md:py-32'>
+    <section id="about" ref={sectionRef} className='w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-20 md:py-32'>
       {/* Section Header */}
-      <div className='w-full max-w-6xl mb-16 md:mb-20'>
+      <div className='w-full max-w-7xl mb-16 md:mb-20'>
         <div className='flex justify-center mb-4'>
           <button className='px-4 py-2 rounded-full bg-gray-900 border border-gray-800 text-white text-sm font-medium'>
             About Me
@@ -220,7 +232,7 @@ export default function About() {
       </div>
 
       {/* Personal Bio Section */}
-      <div className='w-full max-w-6xl mb-20 md:mb-24'>
+      <div className='w-full max-w-7xl mb-20 md:mb-24'>
         <div className='flex flex-col lg:flex-row gap-8 md:gap-12 items-center lg:items-start'>
           {/* Avatar/Headshot */}
           <div ref={avatarRef} className='flex-shrink-0'>
@@ -304,97 +316,114 @@ export default function About() {
         </div>
       </div>
 
-      {/* CTA Section */}
-      <div className='w-full max-w-6xl mb-16 md:mb-20 flex justify-center'>
-        <button
-          onClick={() => {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              const offset = 80;
-              const elementPosition = contactSection.getBoundingClientRect().top;
-              const offsetPosition = elementPosition + window.pageYOffset - offset;
-              window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-              });
-            }
-          }}
-          className='group flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-semibold text-lg md:text-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl'
-        >
-          Hire Me for Your Next Project
-          <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform duration-300' />
-        </button>
-      </div>
-
-      {/* Soft Skills Section */}
-      <div className='w-full max-w-6xl mb-16 md:mb-20'>
-        <div className='mb-8 md:mb-12'>
-          <h3 className='text-3xl md:text-4xl font-bold text-white text-center mb-4'>
-            Beyond Code
-          </h3>
-          <p className='text-base md:text-lg text-gray-400 text-center max-w-2xl mx-auto'>
-            Technical skills are essential, but collaboration, communication, and methodology make the difference in delivering successful projects.
-          </p>
-        </div>
-        <div ref={softSkillsRef} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
-          {softSkills.map((skill, index) => {
-            const IconComponent = skill.icon
-            return (
-              <div
-                key={index}
-                className='soft-skill-card bg-gray-900 border border-gray-800 rounded-2xl p-6 md:p-8 hover:border-gray-700 transition-all duration-300 hover:shadow-lg hover:shadow-white/5'
-              >
-                <div className='mb-4'>
-                  <div className='w-12 h-12 rounded-lg bg-black border border-gray-800 flex items-center justify-center'>
-                    <IconComponent className='w-6 h-6 text-white' />
+      {/* Combined Skills Section */}
+      <div className='w-full max-w-7xl'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start'>
+          {/* Beyond Code - Left Column */}
+          <div className='w-full flex flex-col'>
+            <div className='mb-6 md:mb-8'>
+              <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3'>
+                Beyond Code
+              </h3>
+            </div>
+            <div ref={softSkillsRef} className='grid grid-cols-1 gap-4 md:gap-6'>
+              {softSkills.map((skill, index) => {
+                const IconComponent = skill.icon
+                return (
+                  <div
+                    key={index}
+                    className='soft-skill-card bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 md:p-8 hover:border-gray-700 hover:shadow-lg transition-all duration-300 group cursor-default relative overflow-hidden'
+                  >
+                    {/* Gradient overlay on hover */}
+                    <div className='absolute inset-0 bg-gradient-to-br from-white/5 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-xl' />
+                    
+                    {/* Image container */}
+                    <div className='relative mb-4 w-full h-40 md:h-48 rounded-xl overflow-hidden group-hover:scale-105 transition-all duration-300'>
+                      {skill.image ? (
+                        <img 
+                          src={skill.image} 
+                          alt={`${skill.title}`}
+                          className='w-full h-full object-cover relative z-10'
+                          loading='lazy'
+                          onError={(e) => {
+                            // Fallback to gradient background if image fails to load
+                            e.target.style.display = 'none';
+                            e.target.parentElement.classList.add('bg-gradient-to-br', 'from-gray-800', 'to-gray-900');
+                          }}
+                        />
+                      ) : (
+                        <div className='w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center'>
+                          <IconComponent className='w-12 h-12 md:w-16 md:h-16 text-white opacity-50' />
+                        </div>
+                      )}
+                      {/* Overlay gradient */}
+                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10' />
+                    </div>
+                    
+                    <h3 className='text-white font-bold text-lg md:text-xl mb-2 relative z-10'>
+                      {skill.title}
+                    </h3>
+                    <p className='text-gray-400 text-sm md:text-base leading-relaxed relative z-10'>
+                      {skill.description}
+                    </p>
                   </div>
-                </div>
-                <h3 className='text-xl md:text-2xl font-bold text-white mb-3'>
-                  {skill.title}
-                </h3>
-                <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                  {skill.description}
-                </p>
-              </div>
-            )
-          })}
-        </div>
-      </div>
+                )
+              })}
+            </div>
+          </div>
 
-      {/* Technical Skills Section */}
-      <div className='w-full max-w-6xl'>
-        <div className='mb-8 md:mb-12'>
-          <h3 className='text-3xl md:text-4xl font-bold text-white text-center mb-4'>
-            Technical Expertise
-          </h3>
-          <p className='text-base md:text-lg text-gray-400 text-center max-w-2xl mx-auto'>
-            A comprehensive toolkit for building modern, scalable applications.
-          </p>
-        </div>
-
-        {/* Technical Skills Grid */}
-        <div ref={techSkillsRef} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
-          {skills.map((skill, index) => {
-            const IconComponent = skill.icon
-            return (
-              <div
-                key={index}
-                className='tech-skill-card bg-gray-900 border border-gray-800 rounded-2xl p-6 md:p-8 hover:border-gray-700 transition-all duration-300 hover:shadow-lg hover:shadow-white/5'
-              >
-                <div className='mb-4'>
-                  <div className='w-12 h-12 rounded-lg bg-black border border-gray-800 flex items-center justify-center'>
-                    <IconComponent className='w-6 h-6 text-white' />
+          {/* Technical Expertise - Right Column */}
+          <div className='w-full flex flex-col'>
+            <div className='mb-6 md:mb-8'>
+              <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3'>
+                Technical Expertise
+              </h3>
+            </div>
+            <div ref={techSkillsRef} className='grid grid-cols-1 gap-4 md:gap-6'>
+              {skills.map((skill, index) => {
+                const IconComponent = skill.icon
+                return (
+                  <div
+                    key={index}
+                    className='tech-skill-card bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 md:p-8 hover:border-gray-700 hover:shadow-lg transition-all duration-300 group cursor-default relative overflow-hidden'
+                  >
+                    {/* Gradient overlay on hover */}
+                    <div className='absolute inset-0 bg-gradient-to-br from-white/5 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-xl' />
+                    
+                    {/* Image container */}
+                    <div className='relative mb-4 w-full h-40 md:h-48 rounded-xl overflow-hidden group-hover:scale-105 transition-all duration-300'>
+                      {skill.image ? (
+                        <img 
+                          src={skill.image} 
+                          alt={`${skill.title}`}
+                          className='w-full h-full object-cover relative z-10'
+                          loading='lazy'
+                          onError={(e) => {
+                            // Fallback to gradient background if image fails to load
+                            e.target.style.display = 'none';
+                            e.target.parentElement.classList.add('bg-gradient-to-br', 'from-gray-800', 'to-gray-900');
+                          }}
+                        />
+                      ) : (
+                        <div className='w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center'>
+                          <IconComponent className='w-12 h-12 md:w-16 md:h-16 text-white opacity-50' />
+                        </div>
+                      )}
+                      {/* Overlay gradient */}
+                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10' />
+                    </div>
+                    
+                    <h3 className='text-white font-bold text-lg md:text-xl mb-2 relative z-10'>
+                      {skill.title}
+                    </h3>
+                    <p className='text-gray-400 text-sm md:text-base leading-relaxed relative z-10'>
+                      {skill.description}
+                    </p>
                   </div>
-                </div>
-                <h3 className='text-xl md:text-2xl font-bold text-white mb-3'>
-                  {skill.title}
-                </h3>
-                <p className='text-gray-400 text-sm md:text-base leading-relaxed'>
-                  {skill.description}
-                </p>
-              </div>
-            )
-          })}
+                )
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>

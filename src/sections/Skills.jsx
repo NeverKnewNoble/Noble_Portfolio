@@ -7,20 +7,17 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function Skills() {
   const sectionRef = useRef(null)
-  const languagesRef = useRef(null)
-  const frameworksRef = useRef(null)
-  const librariesRef = useRef(null)
-  const databasesRef = useRef(null)
+  const techStackRef = useRef(null)
 
-  // GSAP animations for skills sections
+  // GSAP animations for tech stack
   useEffect(() => {
     if (!sectionRef.current) return
 
-    // Animate languages
-    if (languagesRef.current) {
-      const languageCards = languagesRef.current.querySelectorAll('.skill-card')
+    // Animate all tech stack items
+    if (techStackRef.current) {
+      const techCards = techStackRef.current.querySelectorAll('.skill-card')
       gsap.fromTo(
-        languageCards,
+        techCards,
         { opacity: 0, y: 30, scale: 0.9 },
         {
           opacity: 1,
@@ -30,73 +27,7 @@ export default function Skills() {
           stagger: 0.05,
           ease: 'back.out(1.2)',
           scrollTrigger: {
-            trigger: languagesRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
-
-    // Animate frameworks
-    if (frameworksRef.current) {
-      const frameworkCards = frameworksRef.current.querySelectorAll('.skill-card')
-      gsap.fromTo(
-        frameworkCards,
-        { opacity: 0, y: 30, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.05,
-          ease: 'back.out(1.2)',
-          scrollTrigger: {
-            trigger: frameworksRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
-
-    // Animate libraries
-    if (librariesRef.current) {
-      const libraryCards = librariesRef.current.querySelectorAll('.skill-card')
-      gsap.fromTo(
-        libraryCards,
-        { opacity: 0, y: 30, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.05,
-          ease: 'back.out(1.2)',
-          scrollTrigger: {
-            trigger: librariesRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
-
-    // Animate databases
-    if (databasesRef.current) {
-      const databaseCards = databasesRef.current.querySelectorAll('.skill-card')
-      gsap.fromTo(
-        databaseCards,
-        { opacity: 0, y: 30, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.05,
-          ease: 'back.out(1.2)',
-          scrollTrigger: {
-            trigger: databasesRef.current,
+            trigger: techStackRef.current,
             start: 'top 80%',
             toggleActions: 'play none none none',
           },
@@ -317,8 +248,11 @@ export default function Skills() {
     }
   ]
 
+  // Combine all tech stack items into one array
+  const techStack = [...languages, ...frameworks, ...libraries, ...databases]
+
   return (
-    <section id="skills" ref={sectionRef} className='min-h-screen w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-20 md:py-32'>
+    <section id="skills" ref={sectionRef} className='w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 '>
       {/* Section Header */}
       <div className='w-full max-w-7xl mb-16 md:mb-20'>
         <div className='flex justify-center mb-4'>
@@ -327,190 +261,34 @@ export default function Skills() {
           </button>
         </div>
         <h2 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white text-center mb-6 leading-tight'>
-          Languages & Frameworks
+          My Technology Stack
         </h2>
-        <p className='text-base sm:text-lg md:text-xl text-gray-400 text-center max-w-3xl mx-auto font-light mb-4'>
-          Technologies I work with to build modern, scalable applications and innovative solutions.
-        </p>
-        <p className='text-sm sm:text-base md:text-lg text-gray-500 text-center max-w-3xl mx-auto font-light leading-relaxed'>
-          From frontend frameworks to backend technologies, I continuously expand my toolkit to deliver cutting-edge solutions. 
-          Currently diving deep into Three.js for 3D web experiences and building scalable applications with modern databases.
-        </p>
       </div>
 
-      {/* Languages Section */}
-      <div className='w-full max-w-7xl mb-16 md:mb-20'>
-        <div className='mb-6 md:mb-8'>
-          <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 text-center md:text-left'>
-            Languages & Tools
-          </h3>
-          <p className='text-gray-400 text-sm md:text-base max-w-3xl font-light leading-relaxed'>
-            Core programming languages and development tools that form the foundation of my development workflow. 
-            From strongly-typed TypeScript to the versatility of JavaScript, I leverage these technologies to create 
-            robust and maintainable codebases.
-          </p>
-        </div>
-        <div ref={languagesRef} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
-          {languages.map((lang, index) => (
-            <div
-              key={index}
-              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${lang.borderColor} rounded-2xl p-5 md:p-6 hover:border-opacity-100 hover:shadow-lg hover:shadow-xl transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default relative overflow-hidden`}
-            >
-              {/* Gradient overlay on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${lang.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
-              
-              {/* Icon container with modern styling */}
-              <div className={`relative mb-4 ${lang.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex items-center justify-center shadow-lg`}>
-                <img 
-                  src={lang.logo} 
-                  alt={`${lang.name} logo - ${lang.description}`}
-                  className='w-10 h-10 md:w-14 md:h-14 relative z-10'
-                  loading='lazy'
-                />
-                {/* Glow effect */}
-                <div className={`absolute inset-0 ${lang.bgColor} rounded-xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
-              </div>
-              
-              <h4 className='text-white font-bold text-sm md:text-base mb-1 relative z-10'>
-                {lang.name}
-              </h4>
-              <span className={`text-xs ${lang.color} font-semibold mb-2 block relative z-10`}>
-                {lang.proficiency}
-              </span>
-              <p className='text-gray-400 text-xs leading-tight mt-1 hidden sm:block relative z-10 group-hover:text-gray-300 transition-colors duration-300'>
-                {lang.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Frameworks & Tools Section */}
-      <div className='w-full max-w-7xl mb-16 md:mb-20'>
-        <div className='mb-6 md:mb-8'>
-          <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 text-center md:text-left'>
-            Frameworks & Tools
-          </h3>
-          <p className='text-gray-400 text-sm md:text-base max-w-3xl font-light leading-relaxed'>
-            Modern frameworks and development tools that accelerate my workflow and enable rapid prototyping. 
-            Whether it's building server-side APIs with Express.js, managing state in React applications, 
-            or styling with utility-first CSS, these tools help me deliver high-quality projects efficiently.
-          </p>
-        </div>
-        <div ref={frameworksRef} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
-          {frameworks.map((framework, index) => (
-            <div
-              key={index}
-              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${framework.borderColor} rounded-2xl p-5 md:p-6 hover:border-opacity-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default relative overflow-hidden`}
-            >
-              {/* Gradient overlay on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${framework.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
-              
-              {/* Icon container with modern styling */}
-              <div className={`relative mb-4 ${framework.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex items-center justify-center shadow-lg`}>
-                <img 
-                  src={framework.logo} 
-                  alt={`${framework.name} logo - ${framework.description}`}
-                  className='w-10 h-10 md:w-14 md:h-14 relative z-10'
-                  loading='lazy'
-                />
-                {/* Glow effect */}
-                <div className={`absolute inset-0 ${framework.bgColor} rounded-xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
-              </div>
-              
-              <h4 className='text-white font-bold text-sm md:text-base mb-2 relative z-10'>
-                {framework.name}
-              </h4>
-              <p className='text-gray-400 text-xs leading-tight hidden sm:block relative z-10 group-hover:text-gray-300 transition-colors duration-300'>
-                {framework.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Libraries Section */}
-      <div className='w-full max-w-7xl mb-16 md:mb-20'>
-        <div className='mb-6 md:mb-8'>
-          <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 text-center md:text-left'>
-            Libraries
-          </h3>
-          <p className='text-gray-400 text-sm md:text-base max-w-3xl font-light leading-relaxed'>
-            Powerful JavaScript libraries that extend functionality and enable specialized features. 
-            These libraries enhance my projects with advanced capabilities, from 3D graphics to complex data visualizations.
-          </p>
-        </div>
-        <div ref={librariesRef} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
-          {libraries.map((library, index) => (
-            <div
-              key={index}
-              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${library.borderColor} rounded-2xl p-5 md:p-6 hover:border-opacity-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default relative overflow-hidden`}
-            >
-              {/* Gradient overlay on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${library.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
-              
-              {/* Icon container with modern styling */}
-              <div className={`relative mb-4 ${library.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex items-center justify-center shadow-lg`}>
-                <img 
-                  src={library.logo} 
-                  alt={`${library.name} logo - ${library.description}`}
-                  className='w-10 h-10 md:w-14 md:h-14 relative z-10'
-                  loading='lazy'
-                />
-                {/* Glow effect */}
-                <div className={`absolute inset-0 ${library.bgColor} rounded-xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
-              </div>
-              
-              <h4 className='text-white font-bold text-sm md:text-base mb-2 relative z-10'>
-                {library.name}
-              </h4>
-              <p className='text-gray-400 text-xs leading-tight hidden sm:block relative z-10 group-hover:text-gray-300 transition-colors duration-300'>
-                {library.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Databases Section */}
+      {/* Unified Tech Stack Section */}
       <div className='w-full max-w-7xl'>
-        <div className='mb-6 md:mb-8'>
-          <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 text-center md:text-left'>
-            Databases
-          </h3>
-          <p className='text-gray-400 text-sm md:text-base max-w-3xl font-light leading-relaxed'>
-            Database systems I use to store, manage, and retrieve data efficiently. 
-            From NoSQL solutions for flexible schemas to relational databases for structured data, 
-            I choose the right database technology based on project requirements.
-          </p>
-        </div>
-        <div ref={databasesRef} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
-          {databases.map((database, index) => (
+        <div ref={techStackRef} className='flex flex-wrap gap-3 md:gap-4 justify-center'>
+          {techStack.map((tech, index) => (
             <div
               key={index}
-              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${database.borderColor} rounded-2xl p-5 md:p-6 hover:border-opacity-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-default relative overflow-hidden`}
+              className={`skill-card bg-gray-900/50 backdrop-blur-sm border ${tech.borderColor} rounded-full px-4 py-2 md:px-5 md:py-2.5 hover:border-opacity-100 hover:shadow-lg transition-all duration-300 group flex items-center gap-2 md:gap-3 cursor-default relative overflow-hidden`}
             >
               {/* Gradient overlay on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${database.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${tech.bgColor} opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-full`} />
               
-              {/* Icon container with modern styling */}
-              <div className={`relative mb-4 ${database.bgColor} rounded-xl p-4 md:p-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex items-center justify-center shadow-lg`}>
+              {/* Icon container */}
+              <div className={`relative ${tech.bgColor} rounded-full p-1.5 md:p-2 group-hover:scale-110 transition-all duration-300 flex items-center justify-center`}>
                 <img 
-                  src={database.logo} 
-                  alt={`${database.name} logo - ${database.description}`}
-                  className='w-10 h-10 md:w-14 md:h-14 relative z-10'
+                  src={tech.logo} 
+                  alt={`${tech.name} logo`}
+                  className='w-4 h-4 md:w-5 md:h-5 relative z-10'
                   loading='lazy'
                 />
-                {/* Glow effect */}
-                <div className={`absolute inset-0 ${database.bgColor} rounded-xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
               </div>
               
-              <h4 className='text-white font-bold text-sm md:text-base mb-2 relative z-10'>
-                {database.name}
+              <h4 className={`${tech.color} font-semibold text-sm md:text-base relative z-10`}>
+                {tech.name}
               </h4>
-              <p className='text-gray-400 text-xs leading-tight hidden sm:block relative z-10 group-hover:text-gray-300 transition-colors duration-300'>
-                {database.description}
-              </p>
             </div>
           ))}
         </div>

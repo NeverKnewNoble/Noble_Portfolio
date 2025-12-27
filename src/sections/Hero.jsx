@@ -1,25 +1,15 @@
-import {Canvas} from "@react-three/fiber";
-import { PerspectiveCamera } from '@react-three/drei';
-import { Suspense, useState, useEffect, useRef } from "react";
-import Kona from "../components/3D/Kona";
-import CanvasLoader from "../components/3D/CanvasLoader";
-import { OrbitControls } from "@react-three/drei";
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ArrowRight } from 'lucide-react';
 
 
 export default function Hero() {
-
-  const [isMobile, setIsMobile] = useState(false);
   const greetingRef = useRef(null);
   const descriptionRef = useRef(null);
   const headingRef = useRef(null);
   const headingLine1Ref = useRef(null);
   const headingLine2Ref = useRef(null);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+  const buttonRef = useRef(null);
 
   // GSAP entrance animations for hero text
   useEffect(() => {
@@ -63,22 +53,34 @@ export default function Hero() {
       );
     }
 
+    // Animate button
+    if (buttonRef.current) {
+      timeline.fromTo(
+        buttonRef.current,
+        { opacity: 0, y: 20, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.2)' },
+        '-=0.5'
+      );
+    }
+
     return () => {
       timeline.kill();
     };
   }, []);
 
-  //? Default values for Kona position, rotation, and scale
-  //? Mobile: scale 5.0, pos(1.3, 0.1, 0.1), rot(85.6, -0.7, -0.8), cameraZ 16.0
-  //? Desktop: scale 4.6, pos(0.1, -8.1, 1.5), rot(3.4, -2.3, 0.0), cameraZ 28.3
-  const scale = isMobile ? 5.0 : 4.6;
-  const positionX = isMobile ? 1.3 : 0.1;
-  const positionY = isMobile ? 0.1 : -8.1;
-  const positionZ = isMobile ? 0.1 : 1.5;
-  const rotationX = isMobile ? 85.6 : 3.4;
-  const rotationY = isMobile ? -0.7 : -2.3;
-  const rotationZ = isMobile ? -0.8 : 0.0;
-  const cameraZ = isMobile ? 16.0 : 28.3;
+  // Handle button click to scroll to contact section
+  const handleHireMeClick = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      const offset = 80;
+      const elementPosition = contactSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <section id="home" className='h-screen w-full bg-black flex items-center justify-center relative overflow-hidden'>
@@ -86,9 +88,19 @@ export default function Hero() {
         <div className='absolute inset-0 bg-gradient-to-br from-black via-black to-gray-950 opacity-100' />
         <div className='absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl' />
         <div className='absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-white/5 to-transparent rounded-full blur-3xl' />
+        
+        {/* Spotlight Effect - Shines on the text */}
+        <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
+          <div 
+            className='w-full max-w-5xl h-[80vh] bg-gradient-radial from-white/20 via-white/10 to-transparent opacity-60 blur-2xl'
+            style={{
+              background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 30%, transparent 70%)',
+            }}
+          />
+        </div>
 
-        {/* Text Content - Behind the model (like on a wall) - Centered on mobile, top on desktop */}
-        <div className='absolute inset-0 flex flex-col items-center justify-center md:justify-start z-0 px-4 sm:px-6 md:px-10 lg:px-10 md:pt-26'>
+        {/* Text Content - Centered */}
+        <div className='absolute inset-0 flex flex-col items-center justify-center z-0 px-4 sm:px-6 md:px-12 lg:px-20'>
             {/* Greeting with premium styling */}
             <div ref={greetingRef} className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-2 md:mb-3 will-change-transform'>
               <p className='text-sm sm:text-base md:text-lg font-medium text-gray-300 tracking-wide'>
@@ -111,42 +123,17 @@ export default function Hero() {
               </span>
             </h1>
 
+            {/* Hire Me Button */}
+            <div ref={buttonRef} className='flex justify-center mt-8 md:mt-12 will-change-transform'>
+              <button
+                onClick={handleHireMeClick}
+                className='group flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-semibold text-lg md:text-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl'
+              >
+                Hire me for your next project
+                <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform duration-300' />
+              </button>
         </div>
 
-        {/* 3D Model - Right Side with premium effects */}
-        <div className='hidden md:flex flex-1 min-h-0 w-full md:w-auto md:h-full relative overflow-hidden z-10'>
-          {/* Glow effect around 3D model */}
-          <div className='absolute inset-0 bg-gradient-radial from-white/10 via-transparent to-transparent pointer-events-none' />
-          
-          <Canvas 
-            className='relative z-10'
-            style={{ height: '100%', width: '100%' }}
-            performance={{ min: 0.5 }} // Optimize performance
-            dpr={[1, 2]} // Limit pixel ratio for better performance
-          >
-            <Suspense fallback={<CanvasLoader />}>
-                <OrbitControls 
-                  enableZoom={false} 
-                  autoRotate={true} 
-                  autoRotateSpeed={1.0}
-                  enablePan={false}
-                  maxPolarAngle={Math.PI / 2}
-                  minPolarAngle={Math.PI / 2}
-                />
-                <Kona 
-                  scale={scale} 
-                  position={[positionX, positionY, positionZ]} 
-                  rotation={[
-                    rotationX * Math.PI / 180,
-                    rotationY * Math.PI / 180,
-                    rotationZ * Math.PI / 180
-                  ]}
-                /> 
-                  <ambientLight intensity={1} />
-                  <directionalLight position={[10, 10, 10]} intensity={7} />
-                  <PerspectiveCamera makeDefault position={[0, 0, cameraZ]}/>
-            </Suspense>
-          </Canvas>
         </div>
     </section>
   )

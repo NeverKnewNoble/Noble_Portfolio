@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ExternalLink, Github, X, Target, Lightbulb, TrendingUp, BookOpen, Clock, Users, Code } from 'lucide-react'
+import { ExternalLink, Github, X, Target, Lightbulb, TrendingUp, BookOpen, Clock, Users, Code, ChevronLeft, ChevronRight } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 // Import images
 import autoformImage from '../assets/images/autoform.png'
 import linkrexImage from '../assets/images/linkrex.png'
 import ticketImage from '../assets/images/ticket.png'
+import Dispatchly from '../assets/images/dispatchly.png'
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger)
@@ -107,6 +108,35 @@ export default function Projects() {
         impact: 'Linkerex is actively helping students discover opportunities that align with their career goals. The platform has facilitated hundreds of successful connections between students and employers. User feedback has been positive, with particular appreciation for the intuitive interface and relevant job matches.',
         lessons: 'This ongoing project has taught me the value of iterative development and user feedback. I\'ve learned to prioritize features based on actual user needs rather than assumptions. The project continues to evolve, teaching me about maintaining and scaling applications while adding new features. It has also highlighted the importance of search algorithm optimization for user satisfaction.'
       }
+    },
+    {
+      title: 'Dispatchly',
+      description: 'A full-stack e-commerce platform integrated with a dedicated logistics and rider delivery system. Customers can browse products, place orders, make payments, and track their deliveries in real time through a structured order status and tracking timeline.',
+      tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'MongoDB', 'Real-time Tracking', 'Payment Integration', 'Admin Dashboard', 'Mobile-First Design'],
+      image: Dispatchly,
+      // liveUrl: '#', // Add when available
+      // githubUrl: '#', // Add when available
+      status: 'ongoing',
+      caseStudy: {
+        challenge: 'Businesses need a unified platform that combines e-commerce functionality with logistics and delivery management. Traditional solutions require separate systems for online sales and delivery operations, leading to fragmented workflows, poor customer experience, and inefficient order fulfillment. There was a clear need for an integrated solution that handles everything from product browsing to last-mile delivery tracking in a single, cohesive platform.',
+        approach: 'I\'m developing Dispatchly as a comprehensive full-stack platform that seamlessly integrates e-commerce with logistics operations. The system includes a customer-facing storefront for browsing and purchasing, an admin dashboard for managing products and orders, and a mobile-friendly rider dashboard for delivery operations. I\'m implementing real-time order tracking, structured status updates, and a scalable architecture that can evolve from basic status tracking to advanced location-based tracking and notifications.',
+        technologies: {
+          frontend: ['Next.js', 'TypeScript', 'Tailwind CSS', 'React Hooks', 'Responsive Design'],
+          backend: ['MongoDB', 'RESTful APIs', 'Real-time Updates', 'Order Management System'],
+          ecommerce: ['Product Catalog', 'Shopping Cart', 'Payment Integration', 'Order Processing'],
+          logistics: ['Rider Management', 'Order Assignment', 'Delivery Tracking', 'Status Updates'],
+          admin: ['Dashboard Analytics', 'Inventory Management', 'Sales Reports', 'User Management'],
+          features: ['Real-time Tracking', 'Mobile-Friendly Rider Dashboard', 'Order Status Timeline', 'Location Navigation']
+        },
+        results: [
+          { metric: 'In Development', description: 'Full e-commerce and logistics integration' },
+          { metric: 'Scalable', description: 'Architecture designed for growth' },
+          { metric: 'Unified', description: 'Single platform for sales and delivery' },
+          { metric: 'Real-time', description: 'Live order tracking and updates' }
+        ],
+        impact: 'Dispatchly aims to revolutionize how businesses handle online sales and delivery operations by providing a unified platform. The system eliminates the need for separate e-commerce and logistics solutions, streamlining operations and improving customer experience through real-time tracking and transparent order status updates.',
+        lessons: 'This project is teaching me the complexities of building integrated systems that serve multiple user types (customers, admins, riders) with different needs and workflows. I\'m learning to design scalable architectures that can evolve from basic features to advanced real-time capabilities. The project emphasizes the importance of real-time data synchronization and mobile-first design for delivery operations.'
+      }
     }
   ]
 
@@ -116,6 +146,8 @@ export default function Projects() {
   const cardsContainerRef = useRef(null);
   const cardRefs = useRef([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   // Open case study modal
   const openCaseStudy = (project) => {
@@ -129,6 +161,38 @@ export default function Projects() {
     setIsModalOpen(false);
     setSelectedProject(null);
     document.body.style.overflow = 'unset';
+  };
+
+  // Check scroll position and update button states
+  const checkScrollButtons = () => {
+    if (!cardsContainerRef.current || !containerRef.current) return;
+    
+    const container = containerRef.current;
+    const cardsContainer = cardsContainerRef.current;
+    const scrollLeft = container.scrollLeft;
+    const maxScroll = cardsContainer.scrollWidth - container.clientWidth;
+    
+    setCanScrollLeft(scrollLeft > 10); // 10px threshold
+    setCanScrollRight(scrollLeft < maxScroll - 10); // 10px threshold for smooth UX
+  };
+
+  // Scroll functions
+  const scrollLeft = () => {
+    if (!containerRef.current) return;
+    const cardWidth = 400; // Approximate card width + gap
+    containerRef.current.scrollBy({
+      left: -cardWidth,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollRight = () => {
+    if (!containerRef.current) return;
+    const cardWidth = 400; // Approximate card width + gap
+    containerRef.current.scrollBy({
+      left: cardWidth,
+      behavior: 'smooth'
+    });
   };
 
   // GSAP animation for modal and keyboard support
@@ -192,6 +256,20 @@ export default function Projects() {
       });
     };
   }, []);
+
+  // Check scroll buttons on mount and resize
+  useEffect(() => {
+    if (imagesLoaded && containerRef.current) {
+      checkScrollButtons();
+      
+      const handleResize = () => {
+        setTimeout(checkScrollButtons, 100);
+      };
+      
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, [imagesLoaded, projects.length]);
 
   // Card hover animations and entrance animations
   useEffect(() => {
@@ -293,65 +371,11 @@ export default function Projects() {
     };
   }, [imagesLoaded, projects.length]);
 
-  // Horizontal scroll animation on mount - only activate if 4+ projects
-  useEffect(() => {
-    // Only enable horizontal scroll if there are 4 or more projects
-    if (projects.length < 4) return;
-
-    if (!sectionRef.current || !containerRef.current || !cardsContainerRef.current || !imagesLoaded) return;
-
-    // Small delay to ensure DOM is fully rendered
-    const timer = setTimeout(() => {
-      const section = sectionRef.current;
-      const container = containerRef.current;
-      const cardsContainer = cardsContainerRef.current;
-      const projectCards = gsap.utils.toArray('.project-card');
-
-      if (projectCards.length === 0) return;
-
-      // Calculate total horizontal distance to scroll through all cards
-      const totalWidth = cardsContainer.scrollWidth - container.offsetWidth;
-      
-      // Only proceed if there's actually content to scroll
-      if (totalWidth <= 0) return;
-      
-      // Calculate scroll distance: use viewport height multiplied by number of cards
-      // This ensures each card gets adequate scroll time before moving to next section
-      const viewportHeight = window.innerHeight;
-      const scrollMultiplier = projectCards.length * 2; // 2 viewport heights per card
-
-      // Animate the cards container horizontally
-      gsap.to(cardsContainer, {
-        x: -totalWidth,
-        ease: 'sine.out',
-        scrollTrigger: {
-          trigger: section,
-          start: "center center",
-          pin: true,
-          scrub: 1,
-          snap: {
-            snapTo: 1 / (projectCards.length - 1),
-            duration: { min: 0.2, max: 0.1 },
-            delay: 0.0
-          },
-          // End after scrolling enough to cover all cards
-          end: () => `+=${viewportHeight * scrollMultiplier}`
-        }
-      });
-
-      // Refresh ScrollTrigger after setup
-      ScrollTrigger.refresh();
-    }, 100);
-
-    // Cleanup
-    return () => {
-      clearTimeout(timer);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [projects.length, imagesLoaded]);
+  // Horizontal scroll animation disabled - using manual navigation buttons instead
+  // The buttons provide better user control for navigating through project cards
 
   return (
-    <section id="projects" ref={sectionRef} className='min-h-screen w-full bg-black flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-10 md:py-20'>
+    <section id="projects" ref={sectionRef} className='w-full bg-black flex flex-col items-center relative px-4 sm:px-6 md:px-12 lg:px-20 py-20 md:py-32'>
       {/* Section Header */}
       <div className='w-full max-w-7xl mb-10 md:mb-15'>
         <div className='flex justify-center mb-4'>
@@ -368,13 +392,48 @@ export default function Projects() {
       </div>
 
       {/* Projects Container */}
-      <div ref={containerRef} className={`p-10 mb-20 min-h-[600px] w-full max-w-7xl ${projects.length >= 4 ? 'overflow-hidden' : 'overflow-visible'}`}>
-        <div ref={cardsContainerRef} className={`flex gap-8 md:gap-10 pb-4 ${projects.length >= 4 ? '' : 'justify-center flex-wrap'}`}>
+      <div className='relative w-full max-w-7xl'>
+        {/* Navigation Buttons */}
+        {projects.length >= 4 && (
+          <>
+            <button
+              onClick={scrollLeft}
+              disabled={!canScrollLeft}
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 ${
+                canScrollLeft 
+                  ? 'hover:bg-white/20 hover:border-white/30 hover:scale-110 text-white cursor-pointer' 
+                  : 'opacity-30 cursor-not-allowed text-gray-500'
+              }`}
+              aria-label='Scroll left'
+            >
+              <ChevronLeft className='w-6 h-6 md:w-7 md:h-7' />
+            </button>
+            <button
+              onClick={scrollRight}
+              disabled={!canScrollRight}
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 ${
+                canScrollRight 
+                  ? 'hover:bg-white/20 hover:border-white/30 hover:scale-110 text-white cursor-pointer' 
+                  : 'opacity-30 cursor-not-allowed text-gray-500'
+              }`}
+              aria-label='Scroll right'
+            >
+              <ChevronRight className='w-6 h-6 md:w-7 md:h-7' />
+            </button>
+          </>
+        )}
+        
+        <div 
+          ref={containerRef} 
+          className={`p-10 min-h-[600px] w-full ${projects.length >= 4 ? 'overflow-x-auto overflow-y-hidden scrollbar-hide' : 'overflow-visible'}`}
+          onScroll={checkScrollButtons}
+        >
+          <div ref={cardsContainerRef} className={`flex gap-8 md:gap-10 pb-4 ${projects.length >= 4 ? '' : 'justify-center flex-wrap'}`}>
           {projects.map((project, index) => (
             <div
               key={index}
               ref={(el) => (cardRefs.current[index] = el)}
-              className='project-card bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 transition-colors duration-300 group shrink-0 w-[300px] sm:w-[350px] md:w-[400px] lg:w-[400px] will-change-transform'
+              className='project-card bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shrink-0 w-[300px] sm:w-[350px] md:w-[400px] lg:w-[400px] will-change-transform'
               style={{ transformStyle: 'preserve-3d' }}
             >
             {/* Project Image/Video Container */}
@@ -406,12 +465,8 @@ export default function Projects() {
                     loading='lazy'
                     decoding='async'
                   />
-                  {/* Overlay gradient for better text readability */}
-                  <div className='absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
                 </>
               )}
-              {/* Hover overlay effect */}
-              <div className='absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300' />
             </div>
 
             {/* Project Content */}
@@ -457,31 +512,36 @@ export default function Projects() {
                   <BookOpen className='w-4 h-4' />
                   View Case Study
                 </button>
-                <div className='flex gap-3'>
-                  <a
-                    href={project.liveUrl}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white text-black font-medium text-sm hover:bg-gray-100 transition-colors duration-200 flex-1'
-                  >
-                    <ExternalLink className='w-4 h-4' />
-                    Live Demo
-                  </a>
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-800 text-white font-medium text-sm hover:border-gray-700 hover:bg-gray-900 transition-colors duration-200'
-                    >
-                      <Github className='w-4 h-4' />
-                    </a>
-                  )}
-                </div>
+                {(project.liveUrl || project.githubUrl) && (
+                  <div className='flex gap-3'>
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white text-black font-medium text-sm hover:bg-gray-100 transition-colors duration-200 flex-1'
+                      >
+                        <ExternalLink className='w-4 h-4' />
+                        Live Demo
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-800 text-white font-medium text-sm hover:border-gray-700 hover:bg-gray-900 transition-colors duration-200'
+                      >
+                        <Github className='w-4 h-4' />
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         ))}
+          </div>
         </div>
       </div>
 
@@ -489,13 +549,15 @@ export default function Projects() {
       {isModalOpen && selectedProject && (
         <div
           ref={overlayRef}
-          className='fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4'
+          className='fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-hidden'
           onClick={closeCaseStudy}
+          onWheel={(e) => e.stopPropagation()}
         >
           <div
             ref={modalRef}
-            className='bg-gray-900 border border-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto'
+            className='bg-gray-900 border border-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden'
             onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
             <div className='sticky top-0 bg-gray-900 border-b border-gray-800 p-6 flex items-start justify-between z-10'>
@@ -524,7 +586,7 @@ export default function Projects() {
             </div>
 
             {/* Modal Content */}
-            <div className='p-6 md:p-8 space-y-8'>
+            <div className='p-6 md:p-8 space-y-8 overflow-y-auto flex-1'>
               {/* The Challenge */}
               <div className='case-study-section'>
                 <div className='flex items-center gap-3 mb-4'>
@@ -632,28 +694,32 @@ export default function Projects() {
               </div>
 
               {/* Action Buttons */}
-              <div className='flex flex-wrap gap-4 pt-4 border-t border-gray-800'>
-                <a
-                  href={selectedProject.liveUrl}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-black font-medium hover:bg-gray-100 transition-colors duration-200'
-                >
-                  <ExternalLink className='w-5 h-5' />
-                  View Live Demo
-                </a>
-                {selectedProject.githubUrl && (
-                  <a
-                    href={selectedProject.githubUrl}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='flex items-center gap-2 px-6 py-3 rounded-lg border border-gray-800 text-white font-medium hover:border-gray-700 hover:bg-gray-800 transition-colors duration-200'
-                  >
-                    <Github className='w-5 h-5' />
-                    View Code
-                  </a>
-                )}
-              </div>
+              {(selectedProject.liveUrl || selectedProject.githubUrl) && (
+                <div className='flex flex-wrap gap-4 pt-4 border-t border-gray-800'>
+                  {selectedProject.liveUrl && (
+                    <a
+                      href={selectedProject.liveUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-black font-medium hover:bg-gray-100 transition-colors duration-200'
+                    >
+                      <ExternalLink className='w-5 h-5' />
+                      View Live Demo
+                    </a>
+                  )}
+                  {selectedProject.githubUrl && (
+                    <a
+                      href={selectedProject.githubUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='flex items-center gap-2 px-6 py-3 rounded-lg border border-gray-800 text-white font-medium hover:border-gray-700 hover:bg-gray-800 transition-colors duration-200'
+                    >
+                      <Github className='w-5 h-5' />
+                      View Code
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

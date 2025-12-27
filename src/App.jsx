@@ -1,11 +1,13 @@
 import React, { useEffect, Suspense, lazy } from 'react'
 import Navbar from './sections/Navbar';
 import Hero from './sections/Hero';
+import Footer from './sections/Footer';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Lazy load sections below the fold for better initial load performance
+const Showcase3D = lazy(() => import('./sections/Showcase3D'));
 const About = lazy(() => import('./sections/About'));
 const Skills = lazy(() => import('./sections/Skills'));
 const Projects = lazy(() => import('./sections/Projects'));
@@ -55,11 +57,13 @@ export default function App() {
       <Hero />
       {/* Lazy load sections below the fold */}
       <Suspense fallback={<SectionLoader />}>
+        <Projects />
         <About />
         <Skills />
-        <Projects />
+        <Showcase3D />
         <Contact />
       </Suspense>
+      <Footer />
     </div>
   )
 }
