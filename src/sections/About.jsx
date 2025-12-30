@@ -12,8 +12,7 @@ export default function About() {
   const bioRef = useRef(null)
   const avatarRef = useRef(null)
   const achievementsRef = useRef(null)
-  const softSkillsRef = useRef(null)
-  const techSkillsRef = useRef(null)
+  const skillsRef = useRef(null)
 
   // Personal bio and achievements data
   const bioData = {
@@ -24,83 +23,93 @@ export default function About() {
     focus: 'I specialize in creating seamless digital experiences that combine cutting-edge technology with intuitive design, always prioritizing performance and user satisfaction.'
   }
 
-  // Soft skills data
-  const softSkills = [
-    {
-      icon: Users,
-      title: 'Collaboration',
-      description: 'Experienced in working with cross-functional teams, pair programming, and contributing to open-source projects. Strong believer in knowledge sharing and mentorship.',
-      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop&q=80'
-    },
-    {
-      icon: MessageSquare,
-      title: 'Client Communication',
-      description: 'Skilled at translating technical concepts into clear, actionable insights for stakeholders. Proven track record of managing client expectations and delivering on time.',
-      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop&q=80'
-    },
-    {
-      icon: GitBranch,
-      title: 'Agile Methodologies',
-      description: 'Proficient in Scrum and Kanban workflows. Experienced with sprint planning, daily standups, and iterative development cycles that ensure continuous delivery.',
-      image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=600&fit=crop&q=80'
-    },
-    {
-      icon: Target,
-      title: 'Problem Solving',
-      description: 'Analytical thinker who breaks down complex challenges into manageable solutions. Strong debugging skills and systematic approach to troubleshooting.',
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&q=80'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Continuous Learning',
-      description: 'Committed to staying current with industry trends and emerging technologies. Regularly contribute to tech communities and attend conferences.',
-      image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop&q=80'
-    },
-    {
-      icon: Award,
-      title: 'Quality Focus',
-      description: 'Dedicated to writing clean, maintainable code and following best practices. Strong advocate for testing, code reviews, and documentation.',
-      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop&q=80'
-    }
-  ]
-
-  // Technical Skills/Expertise cards data
-  const skills = [
+  // Combined skills data - unified design with images
+  const allSkills = [
+    // Technical Skills
     {
       icon: Code,
       title: 'Full-Stack Development',
       description: 'Building scalable web applications with modern frameworks and technologies, from frontend to backend.',
+      category: 'technical',
       image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop&q=80'
-    },
-    {
-      icon: Zap,
-      title: 'Performance Optimization',
-      description: 'Optimizing applications for speed and efficiency, ensuring fast load times and smooth user experiences.',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80'
-    },
-    {
-      icon: Palette,
-      title: 'UI/UX Design',
-      description: 'Creating beautiful, intuitive interfaces that prioritize user experience and modern design principles.',
-      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop&q=80'
-    },
-    {
-      icon: Smartphone,
-      title: 'Responsive Design',
-      description: 'Developing mobile-first applications that work seamlessly across all devices and screen sizes.',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Globe,
       title: 'Web Technologies',
-      description: 'Expert in React, Three.js, and modern web standards to create cutting-edge digital experiences.',
+      description: 'Expert in React, Next.js, Three.js, and modern web standards to create cutting-edge digital experiences.',
+      category: 'technical',
       image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop&q=80'
     },
     {
       icon: Database,
       title: 'Backend Solutions',
       description: 'Designing robust server-side architectures and APIs that power scalable applications.',
+      category: 'technical',
       image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&q=80'
+    },
+    {
+      icon: Zap,
+      title: 'Performance Optimization',
+      description: 'Optimizing applications for speed and efficiency, ensuring fast load times and smooth user experiences.',
+      category: 'technical',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80'
+    },
+    {
+      icon: Palette,
+      title: 'UI/UX Design',
+      description: 'Creating beautiful, intuitive interfaces that prioritize user experience and modern design principles.',
+      category: 'technical',
+      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop&q=80'
+    },
+    {
+      icon: Smartphone,
+      title: 'Responsive Design',
+      description: 'Developing mobile-first applications that work seamlessly across all devices and screen sizes.',
+      category: 'technical',
+      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop&q=80'
+    },
+    // Soft Skills
+    {
+      icon: Users,
+      title: 'Collaboration',
+      description: 'Experienced in working with cross-functional teams, pair programming, and contributing to open-source projects.',
+      category: 'soft',
+      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop&q=80'
+    },
+    {
+      icon: MessageSquare,
+      title: 'Client Communication',
+      description: 'Skilled at translating technical concepts into clear, actionable insights for stakeholders.',
+      category: 'soft',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop&q=80'
+    },
+    {
+      icon: GitBranch,
+      title: 'Agile Methodologies',
+      description: 'Proficient in Scrum and Kanban workflows. Experienced with sprint planning and iterative development.',
+      category: 'soft',
+      image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=600&fit=crop&q=80'
+    },
+    {
+      icon: Target,
+      title: 'Problem Solving',
+      description: 'Analytical thinker who breaks down complex challenges into manageable solutions with systematic approaches.',
+      category: 'soft',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&q=80'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Continuous Learning',
+      description: 'Committed to staying current with industry trends and emerging technologies.',
+      category: 'soft',
+      image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop&q=80'
+    },
+    {
+      icon: Award,
+      title: 'Quality Focus',
+      description: 'Dedicated to writing clean, maintainable code and following best practices.',
+      category: 'soft',
+      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop&q=80'
     }
   ]
 
@@ -167,41 +176,21 @@ export default function About() {
       )
     }
 
-    // Animate soft skills
-    if (softSkillsRef.current) {
-      const softSkillCards = softSkillsRef.current.querySelectorAll('.soft-skill-card')
+    // Animate all skills
+    if (skillsRef.current) {
+      const skillCards = skillsRef.current.querySelectorAll('.skill-card')
       gsap.fromTo(
-        softSkillCards,
-        { opacity: 0, y: 30 },
+        skillCards,
+        { opacity: 0, y: 30, scale: 0.95 },
         {
           opacity: 1,
           y: 0,
+          scale: 1,
           duration: 0.6,
-          stagger: 0.1,
+          stagger: 0.08,
           ease: 'power2.out',
           scrollTrigger: {
-            trigger: softSkillsRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
-
-    // Animate technical skills
-    if (techSkillsRef.current) {
-      const techSkillCards = techSkillsRef.current.querySelectorAll('.tech-skill-card')
-      gsap.fromTo(
-        techSkillCards,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: techSkillsRef.current,
+            trigger: skillsRef.current,
             start: 'top 80%',
             toggleActions: 'play none none none',
           },
@@ -316,114 +305,72 @@ export default function About() {
         </div>
       </div>
 
-      {/* Combined Skills Section */}
+      {/* Skills & Expertise Section - Redesigned */}
       <div className='w-full max-w-7xl'>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start'>
-          {/* Beyond Code - Left Column */}
-          <div className='w-full flex flex-col'>
-            <div className='mb-6 md:mb-8'>
-              <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3'>
-                Beyond Code
-              </h3>
-            </div>
-            <div ref={softSkillsRef} className='grid grid-cols-1 gap-4 md:gap-6'>
-              {softSkills.map((skill, index) => {
-                const IconComponent = skill.icon
-                return (
-                  <div
-                    key={index}
-                    className='soft-skill-card bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 md:p-8 hover:border-gray-700 hover:shadow-lg transition-all duration-300 group cursor-default relative overflow-hidden'
-                  >
-                    {/* Gradient overlay on hover */}
-                    <div className='absolute inset-0 bg-gradient-to-br from-white/5 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-xl' />
-                    
-                    {/* Image container */}
-                    <div className='relative mb-4 w-full h-40 md:h-48 rounded-xl overflow-hidden group-hover:scale-105 transition-all duration-300'>
-                      {skill.image ? (
-                        <img 
-                          src={skill.image} 
-                          alt={`${skill.title}`}
-                          className='w-full h-full object-cover relative z-10'
-                          loading='lazy'
-                          onError={(e) => {
-                            // Fallback to gradient background if image fails to load
-                            e.target.style.display = 'none';
-                            e.target.parentElement.classList.add('bg-gradient-to-br', 'from-gray-800', 'to-gray-900');
-                          }}
-                        />
-                      ) : (
-                        <div className='w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center'>
-                          <IconComponent className='w-12 h-12 md:w-16 md:h-16 text-white opacity-50' />
-                        </div>
-                      )}
-                      {/* Overlay gradient */}
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10' />
-                    </div>
-                    
-                    <h3 className='text-white font-bold text-lg md:text-xl mb-2 relative z-10'>
-                      {skill.title}
-                    </h3>
-                    <p className='text-gray-400 text-sm md:text-base leading-relaxed relative z-10'>
-                      {skill.description}
-                    </p>
+        {/* Centered Title */}
+        <div className='flex justify-center mb-12 md:mb-16'>
+          <h3 className='text-3xl sm:text-4xl md:text-5xl font-bold text-white text-center'>
+            Skills & Expertise
+          </h3>
+        </div>
+        
+        {/* Unified Skills Grid */}
+        <div ref={skillsRef} className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6'>
+          {allSkills.map((skill, index) => {
+            const IconComponent = skill.icon
+            return (
+              <div
+                key={index}
+                className='skill-card group relative bg-gray-900/40 backdrop-blur-sm border border-gray-800/50 rounded-2xl p-4 md:p-5 hover:border-gray-700 hover:bg-gray-900/60 transition-all duration-300 cursor-default overflow-hidden flex gap-4'
+              >
+                {/* Animated gradient background on hover */}
+                <div className='absolute inset-0 bg-gradient-to-br from-white/5 via-white/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl' />
+                
+                {/* Image on the left */}
+                <div className='relative flex-shrink-0 w-24 h-24 md:w-28 md:h-28 rounded-xl overflow-hidden group-hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-gray-800 to-gray-900'>
+                  {skill.image ? (
+                    <img 
+                      src={skill.image} 
+                      alt={skill.title}
+                      className='w-full h-full object-cover relative z-10'
+                      loading='lazy'
+                      onError={(e) => {
+                        // Hide image when it fails to load, icon fallback will show
+                        e.target.style.display = 'none';
+                        const iconFallback = e.target.nextElementSibling;
+                        if (iconFallback) {
+                          iconFallback.classList.remove('opacity-0');
+                          iconFallback.classList.add('opacity-100');
+                        }
+                      }}
+                    />
+                  ) : null}
+                  {/* Icon fallback - shows when no image or image fails */}
+                  <div className={`absolute inset-0 flex items-center justify-center z-0 ${skill.image ? 'opacity-0' : 'opacity-100'}`}>
+                    <IconComponent className='w-8 h-8 md:w-10 md:h-10 text-white opacity-50' />
                   </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Technical Expertise - Right Column */}
-          <div className='w-full flex flex-col'>
-            <div className='mb-6 md:mb-8'>
-              <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3'>
-                Technical Expertise
-              </h3>
-            </div>
-            <div ref={techSkillsRef} className='grid grid-cols-1 gap-4 md:gap-6'>
-              {skills.map((skill, index) => {
-                const IconComponent = skill.icon
-                return (
-                  <div
-                    key={index}
-                    className='tech-skill-card bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 md:p-8 hover:border-gray-700 hover:shadow-lg transition-all duration-300 group cursor-default relative overflow-hidden'
-                  >
-                    {/* Gradient overlay on hover */}
-                    <div className='absolute inset-0 bg-gradient-to-br from-white/5 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-xl' />
-                    
-                    {/* Image container */}
-                    <div className='relative mb-4 w-full h-40 md:h-48 rounded-xl overflow-hidden group-hover:scale-105 transition-all duration-300'>
-                      {skill.image ? (
-                        <img 
-                          src={skill.image} 
-                          alt={`${skill.title}`}
-                          className='w-full h-full object-cover relative z-10'
-                          loading='lazy'
-                          onError={(e) => {
-                            // Fallback to gradient background if image fails to load
-                            e.target.style.display = 'none';
-                            e.target.parentElement.classList.add('bg-gradient-to-br', 'from-gray-800', 'to-gray-900');
-                          }}
-                        />
-                      ) : (
-                        <div className='w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center'>
-                          <IconComponent className='w-12 h-12 md:w-16 md:h-16 text-white opacity-50' />
-                        </div>
-                      )}
-                      {/* Overlay gradient */}
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10' />
+                  {/* Overlay gradient for better text readability on hover */}
+                  <div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none' />
+                  {/* Icon overlay on image hover */}
+                  <div className='absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30'>
+                    <div className='p-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20'>
+                      <IconComponent className='w-5 h-5 text-white' />
                     </div>
-                    
-                    <h3 className='text-white font-bold text-lg md:text-xl mb-2 relative z-10'>
-                      {skill.title}
-                    </h3>
-                    <p className='text-gray-400 text-sm md:text-base leading-relaxed relative z-10'>
-                      {skill.description}
-                    </p>
                   </div>
-                )
-              })}
-            </div>
-          </div>
+                </div>
+                
+                {/* Content on the right */}
+                <div className='relative z-10 flex-1 flex flex-col min-w-0'>
+                  <h4 className='text-white font-bold text-base md:text-lg mb-1.5 group-hover:text-white transition-colors duration-300 line-clamp-1'>
+                    {skill.title}
+                  </h4>
+                  <p className='text-gray-400 text-xs md:text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300 line-clamp-3'>
+                    {skill.description}
+                  </p>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>
