@@ -1,4 +1,5 @@
 import React, { useEffect, Suspense, lazy } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import Navbar from './sections/Navbar';
 import Hero from './sections/Hero';
 import Footer from './sections/Footer';
@@ -64,6 +65,7 @@ export default function App() {
         <Contact />
       </Suspense>
       <Footer />
+      <Analytics />
     </div>
   )
 }
