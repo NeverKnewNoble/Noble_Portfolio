@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ArrowRight } from 'lucide-react';
-
+import { smoothScrollToId } from '../utils/scroll';
 
 export default function Hero() {
-  const greetingRef = useRef(null);
+  const mastheadRef = useRef(null);
   const descriptionRef = useRef(null);
   const headingRef = useRef(null);
   const headingLine1Ref = useRef(null);
@@ -15,22 +15,12 @@ export default function Hero() {
   useEffect(() => {
     const timeline = gsap.timeline({ delay: 0.3 });
 
-    // Animate greeting
-    if (greetingRef.current) {
+    // Animate masthead row
+    if (mastheadRef.current) {
       timeline.fromTo(
-        greetingRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
-      );
-    }
-
-    // Animate description
-    if (descriptionRef.current) {
-      timeline.fromTo(
-        descriptionRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 0.9, y: 0, duration: 0.8, ease: 'power3.out' },
-        '-=0.4'
+        mastheadRef.current,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }
       );
     }
 
@@ -38,7 +28,7 @@ export default function Hero() {
     if (headingLine1Ref.current) {
       timeline.fromTo(
         headingLine1Ref.current,
-        { opacity: 0, y: 30, clipPath: 'inset(0 0 100% 0)' },
+        { opacity: 0, y: 40, clipPath: 'inset(0 0 100% 0)' },
         { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1, ease: 'power3.out' },
         '-=0.3'
       );
@@ -47,19 +37,29 @@ export default function Hero() {
     if (headingLine2Ref.current) {
       timeline.fromTo(
         headingLine2Ref.current,
-        { opacity: 0, y: 30, clipPath: 'inset(0 0 100% 0)' },
+        { opacity: 0, y: 40, clipPath: 'inset(0 0 100% 0)' },
         { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1, ease: 'power3.out' },
-        '-=0.7'
+        '-=0.75'
       );
     }
 
-    // Animate button
+    // Animate description
+    if (descriptionRef.current) {
+      timeline.fromTo(
+        descriptionRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.5'
+      );
+    }
+
+    // Animate CTAs
     if (buttonRef.current) {
       timeline.fromTo(
         buttonRef.current,
-        { opacity: 0, y: 20, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.2)' },
-        '-=0.5'
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.6'
       );
     }
 
@@ -68,73 +68,81 @@ export default function Hero() {
     };
   }, []);
 
-  // Handle button click to scroll to contact section
-  const handleHireMeClick = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      const offset = 80;
-      const elementPosition = contactSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
+  // Scroll handlers
+  const handleHireMeClick = () => smoothScrollToId('contact');
+  const handleViewWorkClick = () => smoothScrollToId('projects');
 
   return (
-    <section id="home" className='h-screen w-full bg-black flex items-center justify-center relative overflow-hidden'>
-        {/* Premium Background Gradient Effects */}
-        <div className='absolute inset-0 bg-gradient-to-br from-black via-black to-gray-950 opacity-100' />
-        <div className='absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl' />
-        <div className='absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-white/5 to-transparent rounded-full blur-3xl' />
-        
-        {/* Spotlight Effect - Shines on the text */}
-        <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
-          <div 
-            className='w-full max-w-5xl h-[80vh] bg-gradient-radial from-white/20 via-white/10 to-transparent opacity-60 blur-2xl'
-            style={{
-              background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 30%, transparent 70%)',
-            }}
-          />
+    <section
+      id="home"
+      className='relative min-h-screen w-full bg-paper flex flex-col justify-center overflow-hidden'
+    >
+      {/* Subtle hairline-grid backdrop */}
+      <div className='spec-grid absolute inset-0 opacity-60 pointer-events-none' />
+      {/* Soft ambient wash */}
+      <div className='absolute -top-40 -right-32 w-[36rem] h-[36rem] rounded-full bg-accent/5 blur-3xl pointer-events-none' />
+
+      <div className='relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-6 md:px-12 lg:px-20 pt-28 pb-16 md:py-0'>
+        {/* Masthead */}
+        <div
+          ref={mastheadRef}
+          className='flex items-baseline justify-between border-b border-ink/15 pb-4 mb-10 md:mb-16 will-change-transform'
+        >
+          <span className='font-mono text-sm font-medium uppercase tracking-[0.18em] text-ink'>
+            Noble
+          </span>
+          <span className='font-mono text-[11px] sm:text-xs uppercase tracking-[0.18em] text-muted'>
+            Full-Stack Developer
+          </span>
         </div>
 
-        {/* Text Content - Centered */}
-        <div className='absolute inset-0 flex flex-col items-center justify-center z-0 px-4 sm:px-6 md:px-12 lg:px-20'>
-            {/* Greeting with premium styling */}
-            <div ref={greetingRef} className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-2 md:mb-3 will-change-transform'>
-              <p className='text-sm sm:text-base md:text-lg font-medium text-gray-300 tracking-wide'>
-                Hi, I am Noble
-              </p>
-              <span className='text-lg'>👋</span>
-            </div>
-            {/* Description with premium typography */}
-            <p ref={descriptionRef} className='text-base sm:text-lg md:text-xl text-gray-400 font-light leading-relaxed max-w-xl text-center opacity-90 mb-2 md:mb-3 will-change-transform'>
-              Full-stack developer specializing in React, Next.js, and Three.js - Building modern web applications, innovative projects & digital experiences
-            </p>
+        {/* Main heading — the thesis */}
+        <h1
+          ref={headingRef}
+          className='font-display font-medium text-ink text-[clamp(2.6rem,8.5vw,7.5rem)] leading-[1.0] tracking-[-0.02em] max-w-5xl'
+        >
+          <span ref={headingLine1Ref} className='block will-change-transform'>
+            Crafting software
+          </span>
+          <span ref={headingLine2Ref} className='block will-change-transform'>
+            that drives{' '}
+            <span className='italic font-normal text-accent'>impact.</span>
+          </span>
+        </h1>
 
-            {/* Main Heading - Full width across page */}
-            <h1 ref={headingRef} className='w-full font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-[1.05] tracking-[-0.03em] text-center -mt-2 md:-mt-4 will-change-transform'>
-              <span ref={headingLine1Ref} className='block text-white'>
-                Crafting Software
+        {/* Lower row — description + CTAs */}
+        <div className='mt-10 md:mt-16 flex flex-col md:flex-row md:items-end md:justify-between gap-8'>
+          <p
+            ref={descriptionRef}
+            className='text-base sm:text-lg text-muted leading-relaxed max-w-xl will-change-transform'
+          >
+            I build modern web applications and interactive 3D experiences with
+            React, Next.js, and Three.js — shipping real products that people
+            actually use.
+          </p>
+
+          <div
+            ref={buttonRef}
+            className='flex items-center gap-6 shrink-0 will-change-transform'
+          >
+            <button
+              onClick={handleHireMeClick}
+              className='group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-ink text-paper font-medium text-base hover:bg-accent transition-colors duration-300'
+            >
+              Hire me
+              <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform duration-300' />
+            </button>
+            <button
+              onClick={handleViewWorkClick}
+              className='group inline-flex items-center gap-1.5 text-base font-medium text-ink/80 hover:text-accent transition-colors duration-200'
+            >
+              <span className='border-b border-ink/30 group-hover:border-accent transition-colors duration-200 pb-0.5'>
+                View selected work
               </span>
-              <span ref={headingLine2Ref} className='block bg-gradient-to-r from-white to-red-500 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(255,255,255,0.15)] mt-1'>
-                That Drives Impact
-              </span>
-            </h1>
-
-            {/* Hire Me Button */}
-            <div ref={buttonRef} className='flex justify-center mt-8 md:mt-12 will-change-transform'>
-              <button
-                onClick={handleHireMeClick}
-                className='group flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-semibold text-lg md:text-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl'
-              >
-                Hire me for your next project
-                <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform duration-300' />
-              </button>
+            </button>
+          </div>
         </div>
-
-        </div>
+      </div>
     </section>
   )
 }

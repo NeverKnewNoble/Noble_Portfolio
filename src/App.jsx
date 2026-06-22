@@ -19,8 +19,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Loading fallback component
 const SectionLoader = () => (
-  <div className='min-h-screen w-full bg-black flex items-center justify-center'>
-    <div className='w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin' />
+  <div className='min-h-screen w-full bg-paper flex items-center justify-center'>
+    <div className='w-8 h-8 border-2 border-ink/15 border-t-accent rounded-full animate-spin' />
   </div>
 );
 
@@ -53,7 +53,7 @@ export default function App() {
   }, [])
 
   return (
-    <div className='bg-black'>
+    <div className='bg-paper'>
       <Navbar />
       <Hero />
       {/* Lazy load sections below the fold */}
