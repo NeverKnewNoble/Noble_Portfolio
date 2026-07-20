@@ -13,6 +13,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Showcase3D() {
   const [isMobile, setIsMobile] = useState(false);
+  // Defer mounting the 3D canvas (and its model download) until the section
+  // is about to enter the viewport, so it never blocks initial page load.
+  const [shouldLoad3D, setShouldLoad3D] = useState(false);
   const sectionRef = useRef(null);
   const textRef = useRef(null);
   const canvasRef = useRef(null);
@@ -21,52 +24,85 @@ export default function Showcase3D() {
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  // GSAP animations for 3D showcase section
+  // Lazy-mount the canvas when the showcase scrolls near the viewport
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || shouldLoad3D) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShouldLoad3D(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px 0px' } // start loading a bit before it's visible
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [shouldLoad3D]);
+
+  // GSAP animations for 3D showcase section. Scoped with gsap.context so
+  // cleanup only kills this section's triggers, with a viewport-aware safety
+  // net so the text/canvas can never stay stuck invisible.
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    // Animate text layers
-    if (textRef.current) {
-      const textLayers = textRef.current.querySelectorAll('.text-layer');
-      gsap.fromTo(
-        textLayers,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-    }
+    const ctx = gsap.context(() => {
+      // Animate text layers
+      if (textRef.current) {
+        const textLayers = textRef.current.querySelectorAll('.text-layer');
+        gsap.fromTo(
+          textLayers,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top 90%', once: true },
+          }
+        );
+      }
 
-    // Animate canvas entrance
-    if (canvasRef.current) {
-      gsap.fromTo(
-        canvasRef.current,
-        { opacity: 0, scale: 0.9 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-    }
+      // Animate canvas entrance
+      if (canvasRef.current) {
+        gsap.fromTo(
+          canvasRef.current,
+          { opacity: 0, scale: 0.9 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top 90%', once: true },
+          }
+        );
+      }
+    }, sectionRef);
+
+    const refreshId = setTimeout(() => ScrollTrigger.refresh(), 200);
+    const safetyId = setTimeout(() => {
+      const sec = sectionRef.current;
+      if (!sec) return;
+      const r = sec.getBoundingClientRect();
+      const inView = r.top < window.innerHeight && r.bottom > 0;
+      if (!inView) return;
+      const layers = textRef.current?.querySelectorAll('.text-layer');
+      gsap.to([canvasRef.current, ...(layers || [])].filter(Boolean), {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.4,
+        overwrite: 'auto',
+      });
+    }, 1400);
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      clearTimeout(refreshId);
+      clearTimeout(safetyId);
+      ctx.revert();
     };
   }, []);
 
@@ -116,32 +152,38 @@ export default function Showcase3D() {
 
           {/* 3D Model Canvas - Clean and simple */}
           <div ref={canvasRef} className='order-1 lg:order-2 h-[500px] md:h-[650px] lg:h-[750px] relative'>
-            <Canvas 
-              className='relative z-10'
-              style={{ height: '100%', width: '100%' }}
-              performance={{ min: 0.5 }}
-              dpr={[1, 2]}
-            >
-              <Suspense fallback={<CanvasLoader />}>
-                <OrbitControls 
-                  enableZoom={false} 
-                  autoRotate={true} 
-                  autoRotateSpeed={0.8}
-                  enablePan={false}
-                  maxPolarAngle={Math.PI / 2}
-                  minPolarAngle={Math.PI / 2}
-                />
-                <Kona
-                  scale={scale}
-                  position={position}
-                  rotation={rotation}
-                />
-                <ambientLight intensity={1.2} />
-                <directionalLight position={[10, 10, 10]} intensity={6} />
-                <directionalLight position={[-10, -10, -10]} intensity={2} />
-                <PerspectiveCamera makeDefault position={[0, 0, cameraZ]}/>
-              </Suspense>
-            </Canvas>
+            {shouldLoad3D ? (
+              <Canvas
+                className='relative z-10'
+                style={{ height: '100%', width: '100%' }}
+                performance={{ min: 0.5 }}
+                dpr={[1, 2]}
+              >
+                <Suspense fallback={<CanvasLoader />}>
+                  <OrbitControls
+                    enableZoom={false}
+                    autoRotate={true}
+                    autoRotateSpeed={0.8}
+                    enablePan={false}
+                    maxPolarAngle={Math.PI / 2}
+                    minPolarAngle={Math.PI / 2}
+                  />
+                  <Kona
+                    scale={scale}
+                    position={position}
+                    rotation={rotation}
+                  />
+                  <ambientLight intensity={1.2} />
+                  <directionalLight position={[10, 10, 10]} intensity={6} />
+                  <directionalLight position={[-10, -10, -10]} intensity={2} />
+                  <PerspectiveCamera makeDefault position={[0, 0, cameraZ]}/>
+                </Suspense>
+              </Canvas>
+            ) : (
+              <div className='w-full h-full flex items-center justify-center'>
+                <div className='w-8 h-8 border-2 border-ink/15 border-t-accent rounded-full animate-spin' />
+              </div>
+            )}
           </div>
         </div>
       </div>

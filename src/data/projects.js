@@ -1,19 +1,36 @@
-// Import project images
-import autoformImage from '../assets/images/autoform.png'
-import ticketImage from '../assets/images/ticket.png'
+// Import project images (optimized WebP — see scripts/optimize-images.js)
+import autoformImage from '../assets/images/optimized/autoform.webp'
+import ticketImage from '../assets/images/optimized/ticket.webp'
 
 // New project screenshots
-import fluxAdsImage from '../assets/images/flux-ads.png'
-import ellenEffectImage from '../assets/images/ellen-effect.png'
-import kasacartImage from '../assets/images/kasacart.png'
-import nakobiGrillImage from '../assets/images/nakobi-grill.png'
-import joshobPmsImage from '../assets/images/joshob-pms.png'
-import wmsImage from '../assets/images/wms.png'
+import fluxAdsImage from '../assets/images/optimized/flux-ads.webp'
+import ellenEffectImage from '../assets/images/optimized/ellen-effect.webp'
+import kasacartImage from '../assets/images/optimized/kasacart.webp'
+import nakobiGrillImage from '../assets/images/optimized/nakobi-grill.webp'
+import joshobPmsImage from '../assets/images/optimized/joshob-pms.webp'
+import wmsImage from '../assets/images/optimized/wms.webp'
+
+// Category order + short blurbs for grouping projects in the UI
+export const projectCategories = [
+  {
+    name: 'AI & Automation',
+    blurb: 'AI-native products and tools that automate the tedious.',
+  },
+  {
+    name: 'Commerce & Storefronts',
+    blurb: 'Selling online — storefronts, bookings and payments.',
+  },
+  {
+    name: 'Business & Operations',
+    blurb: 'Dashboards and systems that run day-to-day operations.',
+  },
+]
 
 // Projects data with concise case study information
 export const projects = [
   {
     title: 'Flux Ads',
+    category: 'AI & Automation',
     description: 'My AI ads venture — an AI-powered platform that turns a product and a prompt into high-converting ad creatives and marketing copy in minutes.',
     tech: ['Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'Generative AI', 'Prompt Engineering'],
     image: fluxAdsImage,
@@ -37,6 +54,7 @@ export const projects = [
   },
   {
     title: 'The Ellen Effect',
+    category: 'Commerce & Storefronts',
     description: 'A brand and booking site for a lash, hair and braiding studio and training academy — service menus, a transformation gallery and a guided booking flow.',
     tech: ['Next.js', 'React', 'Tailwind CSS', 'Booking Flow', 'Mobile Money'],
     image: ellenEffectImage,
@@ -60,6 +78,7 @@ export const projects = [
   },
   {
     title: 'KasaCart',
+    category: 'Commerce & Storefronts',
     description: 'A commerce platform that gives social-media sellers a single storefront link plus an order and inventory dashboard — replacing scattered DM sales.',
     tech: ['Next.js', 'React', 'Tailwind CSS', 'MongoDB', 'Mobile Money', 'Inventory'],
     image: kasacartImage,
@@ -84,6 +103,7 @@ export const projects = [
   },
   {
     title: 'Nakobi Grill',
+    category: 'Business & Operations',
     description: 'A cloud POS system for high-volume grill restaurants — smart order management, a live table floor map, a kitchen display and real-time sales analytics.',
     tech: ['Next.js', 'React', 'Tailwind CSS', 'Real-time', 'POS', 'Analytics'],
     image: nakobiGrillImage,
@@ -108,6 +128,7 @@ export const projects = [
   },
   {
     title: 'Joshob PMS',
+    category: 'Business & Operations',
     description: 'A project management system for a construction company — dashboards, progress tracking, photo documentation, safety reporting and a document manager.',
     tech: ['Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'Dashboards'],
     image: joshobPmsImage,
@@ -130,6 +151,7 @@ export const projects = [
   },
   {
     title: 'Joshob WMS',
+    category: 'Business & Operations',
     description: 'A warehouse and materials management system for construction sites — goods-received and requisition notes, stock audits, reorder alerts and role-based access across sites.',
     tech: ['Next.js', 'React', 'Tailwind CSS', 'PostgreSQL', 'RBAC', 'Inventory'],
     image: wmsImage,
@@ -154,6 +176,7 @@ export const projects = [
   },
   {
     title: 'AutoformX',
+    category: 'AI & Automation',
     description: 'A lightweight Chrome extension that autofills forms with one click, dramatically reducing time spent on repetitive data entry.',
     tech: ['Next.js', 'Typescript', 'Tailwind CSS', 'WXT', 'MongoDB', 'Paystack', 'Chrome Extension API', 'Content Scripts'],
     image: autoformImage,
@@ -181,6 +204,7 @@ export const projects = [
   },
   {
     title: 'TicketEase',
+    category: 'Business & Operations',
     description: 'A comprehensive ticket management system that streamlines support workflows and improves resolution times through intelligent categorization and tracking.',
     tech: ['Next.js', 'Tailwind CSS', 'Typescript', 'MongoDB', 'NextAuth.js', 'Email Integration'],
     image: ticketImage,

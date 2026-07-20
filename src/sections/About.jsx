@@ -19,93 +19,107 @@ export default function About() {
   const achievementsRef = useRef(null)
   const skillsRef = useRef(null)
 
-  // GSAP animations for About section
+  // GSAP animations for About section.
+  // Scoped with gsap.context so cleanup only kills THIS section's triggers
+  // (a global kill would wipe out other lazy-loaded sections' animations and
+  // leave them stuck invisible). A safety net guarantees content is revealed
+  // even if a ScrollTrigger never fires.
   useEffect(() => {
     if (!sectionRef.current) return
 
-    // Animate bio section
-    if (bioRef.current) {
-      gsap.fromTo(
-        bioRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: bioRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
+    const ctx = gsap.context(() => {
+      // Animate bio section
+      if (bioRef.current) {
+        gsap.fromTo(
+          bioRef.current,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: bioRef.current, start: 'top 90%', once: true },
+          }
+        )
+      }
 
-    // Animate avatar
-    if (avatarRef.current) {
-      gsap.fromTo(
-        avatarRef.current,
-        { opacity: 0, scale: 0.8 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: 'back.out(1.7)',
-          scrollTrigger: {
-            trigger: avatarRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
+      // Animate avatar
+      if (avatarRef.current) {
+        gsap.fromTo(
+          avatarRef.current,
+          { opacity: 0, scale: 0.8 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            ease: 'back.out(1.7)',
+            scrollTrigger: { trigger: avatarRef.current, start: 'top 90%', once: true },
+          }
+        )
+      }
 
-    // Animate achievements
-    if (achievementsRef.current) {
-      const achievementItems = achievementsRef.current.querySelectorAll('.achievement-item')
-      gsap.fromTo(
-        achievementItems,
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.6,
-          stagger: 0.15,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: achievementsRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
+      // Animate achievements
+      if (achievementsRef.current) {
+        const achievementItems = achievementsRef.current.querySelectorAll('.achievement-item')
+        gsap.fromTo(
+          achievementItems,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.15,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: achievementsRef.current, start: 'top 90%', once: true },
+          }
+        )
+      }
 
-    // Animate all skills
-    if (skillsRef.current) {
-      const skillCards = skillsRef.current.querySelectorAll('.skill-card')
-      gsap.fromTo(
-        skillCards,
-        { opacity: 0, y: 30, scale: 0.95 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: skillsRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
+      // Animate all skills
+      if (skillsRef.current) {
+        const skillCards = skillsRef.current.querySelectorAll('.skill-card')
+        gsap.fromTo(
+          skillCards,
+          { opacity: 0, y: 30, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: skillsRef.current, start: 'top 90%', once: true },
+          }
+        )
+      }
+    }, sectionRef)
+
+    // Recalculate trigger positions after lazy layout settles.
+    const refreshId = setTimeout(() => ScrollTrigger.refresh(), 200)
+
+    // Safety net: if the section is on screen but its triggers never fired,
+    // reveal it. Skipped while off screen so the scroll-in animation is kept.
+    const safetyId = setTimeout(() => {
+      const sec = sectionRef.current
+      if (!sec) return
+      const r = sec.getBoundingClientRect()
+      const inView = r.top < window.innerHeight && r.bottom > 0
+      if (!inView) return
+      const els = sec.querySelectorAll('.achievement-item, .skill-card')
+      gsap.to([bioRef.current, avatarRef.current, ...els].filter(Boolean), {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        duration: 0.4,
+        overwrite: 'auto',
+      })
+    }, 1400)
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      clearTimeout(refreshId)
+      clearTimeout(safetyId)
+      ctx.revert()
     }
   }, [])
 

@@ -10,34 +10,51 @@ export default function Skills() {
   const sectionRef = useRef(null)
   const techStackRef = useRef(null)
 
-  // GSAP animations for tech stack
+  // GSAP animation for tech stack. Scoped with gsap.context so cleanup only
+  // affects this section (a global kill would break sibling sections), with a
+  // viewport-aware safety net so content can never stay stuck invisible.
   useEffect(() => {
     if (!sectionRef.current) return
 
-    // Animate all tech stack items
-    if (techStackRef.current) {
-      const techCards = techStackRef.current.querySelectorAll('.skill-card')
-      gsap.fromTo(
-        techCards,
-        { opacity: 0, y: 30, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.05,
-          ease: 'back.out(1.2)',
-          scrollTrigger: {
-            trigger: techStackRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
+    const ctx = gsap.context(() => {
+      if (techStackRef.current) {
+        const techCards = techStackRef.current.querySelectorAll('.skill-card')
+        gsap.fromTo(
+          techCards,
+          { opacity: 0, y: 30, scale: 0.9 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.05,
+            ease: 'back.out(1.2)',
+            scrollTrigger: { trigger: techStackRef.current, start: 'top 90%', once: true },
+          }
+        )
+      }
+    }, sectionRef)
+
+    const refreshId = setTimeout(() => ScrollTrigger.refresh(), 200)
+    const safetyId = setTimeout(() => {
+      const sec = sectionRef.current
+      if (!sec) return
+      const r = sec.getBoundingClientRect()
+      const inView = r.top < window.innerHeight && r.bottom > 0
+      if (!inView) return
+      gsap.to(sec.querySelectorAll('.skill-card'), {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.4,
+        overwrite: 'auto',
+      })
+    }, 1400)
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      clearTimeout(refreshId)
+      clearTimeout(safetyId)
+      ctx.revert()
     }
   }, [])
 

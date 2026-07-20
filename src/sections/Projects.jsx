@@ -2,20 +2,35 @@ import React, { useEffect, useRef, useState } from 'react'
 import { ExternalLink, Github, X, Target, Lightbulb, TrendingUp, BookOpen, Clock, Code, ArrowUpRight } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { projects } from '../data/projects'
+import { projects, projectCategories } from '../data/projects'
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger)
 
+// Stable display number for each project (its position in the full list)
+const projectNumber = new Map(projects.map((p, i) => [p, i + 1]))
+
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [activeCategory, setActiveCategory] = useState('All')
   const modalRef = useRef(null)
   const overlayRef = useRef(null)
 
   // Refs for GSAP animation
   const sectionRef = useRef(null)
   const cardRefs = useRef([])
+
+  // Categories that actually have projects, in the defined order
+  const visibleCategories = projectCategories.filter((cat) =>
+    projects.some((p) => p.category === cat.name)
+  )
+
+  // Which category groups to render given the active filter
+  const groupsToRender =
+    activeCategory === 'All'
+      ? visibleCategories
+      : visibleCategories.filter((cat) => cat.name === activeCategory)
 
   // Open case study modal
   const openCaseStudy = (project) => {
@@ -59,27 +74,40 @@ export default function Projects() {
   }, [isModalOpen])
 
   // Card entrance + subtle tilt-on-hover animations
+  // Re-runs when the active category changes, since cards remount on filter.
   useEffect(() => {
     const cards = cardRefs.current.filter(Boolean)
     if (cards.length === 0) return
 
     // Entrance animation for cards
-    gsap.fromTo(
-      cards,
-      { opacity: 0, y: 40 },
-      {
+    gsap.set(cards, { opacity: 0, y: 40 })
+    const entrance = gsap.to(cards, {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      stagger: 0.12,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 90%',
+        once: true,
+      },
+    })
+
+    // The section is lazy-loaded, so ScrollTrigger positions can be measured
+    // before layout settles and the entrance may never fire. Recalculate once
+    // things settle, and keep a safety net that reveals the cards regardless
+    // so they can never get stuck invisible.
+    const refreshId = setTimeout(() => ScrollTrigger.refresh(), 200)
+    const safetyId = setTimeout(() => {
+      gsap.to(cards, {
         opacity: 1,
         y: 0,
-        duration: 0.7,
-        stagger: 0.12,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 75%',
-          toggleActions: 'play none none none',
-        },
-      }
-    )
+        duration: 0.4,
+        stagger: 0.06,
+        overwrite: 'auto',
+      })
+    }, 1000)
 
     // Subtle 3D tilt on hover for each card
     const cleanups = cards.map((cardElement) => {
@@ -119,8 +147,143 @@ export default function Projects() {
       }
     })
 
-    return () => cleanups.forEach((cleanup) => cleanup())
-  }, [])
+    return () => {
+      clearTimeout(refreshId)
+      clearTimeout(safetyId)
+      entrance.scrollTrigger?.kill()
+      entrance.kill()
+      cleanups.forEach((cleanup) => cleanup())
+    }
+  }, [activeCategory])
+
+  // Assign a stable cardRefs slot to each currently-visible project
+  const refIndexOf = new Map()
+  let running = 0
+  groupsToRender.forEach((cat) => {
+    projects
+      .filter((p) => p.category === cat.name)
+      .forEach((p) => refIndexOf.set(p, running++))
+  })
+
+  // Single project card (reused across every category group)
+  const renderCard = (project) => {
+    const refIndex = refIndexOf.get(project)
+    const number = projectNumber.get(project)
+    return (
+      <article
+        key={project.title}
+        ref={(el) => (cardRefs.current[refIndex] = el)}
+        className='project-card group bg-surface border border-line rounded-2xl overflow-hidden flex flex-col will-change-transform transition-shadow duration-300 hover:shadow-[0_30px_60px_-30px_rgba(23,22,20,0.25)]'
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* Project Image (with fallback until a screenshot is added) */}
+        <div className='relative h-44 bg-paper overflow-hidden border-b border-line'>
+          <div className='project-image-container absolute inset-0 will-change-transform'>
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={`${project.title} — ${project.description}`}
+                className='w-full h-full object-cover'
+                loading='lazy'
+                decoding='async'
+              />
+            ) : (
+              <div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-paper to-line/50'>
+                <span className='font-display text-6xl font-bold text-ink/15 select-none'>
+                  {project.title.charAt(0)}
+                </span>
+              </div>
+            )}
+          </div>
+          {/* Index marker */}
+          <span className='absolute top-3 left-3 font-mono text-[11px] font-medium text-ink bg-surface/90 backdrop-blur-sm border border-line rounded-full px-2 py-0.5'>
+            {String(number).padStart(2, '0')}
+          </span>
+          {/* Status pill */}
+          <span
+            className={`absolute top-3 right-3 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider rounded-full px-2 py-0.5 backdrop-blur-sm border ${
+              project.status === 'ongoing'
+                ? 'bg-accent/10 border-accent/30 text-accent-deep'
+                : 'bg-surface/90 border-line text-muted'
+            }`}
+          >
+            {project.status === 'ongoing' ? (
+              <>
+                <Clock className='w-2.5 h-2.5' /> Building
+              </>
+            ) : (
+              'Shipped'
+            )}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div className='p-5 flex flex-col flex-1'>
+          <h3 className='font-display text-xl font-semibold text-ink mb-2'>
+            {project.title}
+          </h3>
+          <p className='text-sm text-muted leading-relaxed mb-4 line-clamp-3'>
+            {project.description}
+          </p>
+
+          {/* Tech stack */}
+          <div className='flex flex-wrap gap-1.5 mb-5'>
+            {project.tech.slice(0, 3).map((tech, techIndex) => (
+              <span
+                key={techIndex}
+                className='font-mono text-[10px] text-muted bg-paper border border-line rounded-full px-2 py-0.5'
+              >
+                {tech}
+              </span>
+            ))}
+            {project.tech.length > 3 && (
+              <span className='font-mono text-[10px] text-muted/70 px-1 py-0.5'>
+                +{project.tech.length - 3}
+              </span>
+            )}
+          </div>
+
+          {/* Actions */}
+          <div className='mt-auto flex flex-col gap-2'>
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='group/btn inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors duration-200'
+              >
+                <ExternalLink className='w-4 h-4' />
+                Visit site
+              </a>
+            )}
+            <div className='flex items-center gap-2'>
+              <button
+                onClick={() => openCaseStudy(project)}
+                className={`group/cs inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full border border-line text-ink text-sm font-medium hover:border-ink/40 transition-colors duration-200 ${
+                  project.liveUrl ? 'flex-1' : 'w-full'
+                }`}
+              >
+                <BookOpen className='w-4 h-4' />
+                Case study
+                <ArrowUpRight className='w-3.5 h-3.5 group-hover/cs:translate-x-0.5 group-hover/cs:-translate-y-0.5 transition-transform duration-200' />
+              </button>
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  aria-label={`${project.title} source code`}
+                  className='inline-flex items-center justify-center w-10 h-10 shrink-0 rounded-full border border-line text-ink hover:bg-ink hover:text-paper transition-colors duration-200'
+                >
+                  <Github className='w-4 h-4' />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </article>
+    )
+  }
 
   return (
     <section
@@ -146,122 +309,57 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Projects Grid — 4 per row on desktop */}
-      <div className='w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6'>
-        {projects.map((project, index) => (
-          <article
-            key={index}
-            ref={(el) => (cardRefs.current[index] = el)}
-            className='project-card group bg-surface border border-line rounded-2xl overflow-hidden flex flex-col will-change-transform transition-shadow duration-300 hover:shadow-[0_30px_60px_-30px_rgba(23,22,20,0.25)]'
-            style={{ transformStyle: 'preserve-3d' }}
-          >
-            {/* Project Image (with fallback until a screenshot is added) */}
-            <div className='relative h-44 bg-paper overflow-hidden border-b border-line'>
-              <div className='project-image-container absolute inset-0 will-change-transform'>
-                {project.image ? (
-                  <img
-                    src={project.image}
-                    alt={`${project.title} — ${project.description}`}
-                    className='w-full h-full object-cover'
-                    loading='lazy'
-                    decoding='async'
-                  />
-                ) : (
-                  <div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-paper to-line/50'>
-                    <span className='font-display text-6xl font-bold text-ink/15 select-none'>
-                      {project.title.charAt(0)}
-                    </span>
-                  </div>
-                )}
-              </div>
-              {/* Index marker */}
-              <span className='absolute top-3 left-3 font-mono text-[11px] font-medium text-ink bg-surface/90 backdrop-blur-sm border border-line rounded-full px-2 py-0.5'>
-                {String(index + 1).padStart(2, '0')}
+      {/* Category filter tabs */}
+      <div className='w-full max-w-7xl mb-10 md:mb-12 flex flex-wrap gap-2'>
+        {['All', ...visibleCategories.map((c) => c.name)].map((name) => {
+          const active = activeCategory === name
+          const count =
+            name === 'All'
+              ? projects.length
+              : projects.filter((p) => p.category === name).length
+          return (
+            <button
+              key={name}
+              onClick={() => setActiveCategory(name)}
+              className={`inline-flex items-center gap-1.5 font-mono text-xs tracking-wide rounded-full px-4 py-2 border transition-colors duration-200 ${
+                active
+                  ? 'bg-ink text-paper border-ink'
+                  : 'bg-surface text-muted border-line hover:border-ink/40 hover:text-ink'
+              }`}
+            >
+              {name}
+              <span className={active ? 'text-paper/60' : 'text-muted/60'}>
+                {count}
               </span>
-              {/* Status pill */}
-              <span
-                className={`absolute top-3 right-3 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider rounded-full px-2 py-0.5 backdrop-blur-sm border ${
-                  project.status === 'ongoing'
-                    ? 'bg-accent/10 border-accent/30 text-accent-deep'
-                    : 'bg-surface/90 border-line text-muted'
-                }`}
-              >
-                {project.status === 'ongoing' ? (
-                  <>
-                    <Clock className='w-2.5 h-2.5' /> Building
-                  </>
-                ) : (
-                  'Shipped'
-                )}
-              </span>
-            </div>
+            </button>
+          )
+        })}
+      </div>
 
-            {/* Content */}
-            <div className='p-5 flex flex-col flex-1'>
-              <h3 className='font-display text-xl font-semibold text-ink mb-2'>
-                {project.title}
-              </h3>
-              <p className='text-sm text-muted leading-relaxed mb-4 line-clamp-3'>
-                {project.description}
-              </p>
-
-              {/* Tech stack */}
-              <div className='flex flex-wrap gap-1.5 mb-5'>
-                {project.tech.slice(0, 3).map((tech, techIndex) => (
-                  <span
-                    key={techIndex}
-                    className='font-mono text-[10px] text-muted bg-paper border border-line rounded-full px-2 py-0.5'
-                  >
-                    {tech}
-                  </span>
-                ))}
-                {project.tech.length > 3 && (
-                  <span className='font-mono text-[10px] text-muted/70 px-1 py-0.5'>
-                    +{project.tech.length - 3}
-                  </span>
-                )}
-              </div>
-
-              {/* Actions */}
-              <div className='mt-auto flex flex-col gap-2'>
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='group/btn inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors duration-200'
-                  >
-                    <ExternalLink className='w-4 h-4' />
-                    Visit site
-                  </a>
-                )}
-                <div className='flex items-center gap-2'>
-                  <button
-                    onClick={() => openCaseStudy(project)}
-                    className={`group/cs inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full border border-line text-ink text-sm font-medium hover:border-ink/40 transition-colors duration-200 ${
-                      project.liveUrl ? 'flex-1' : 'w-full'
-                    }`}
-                  >
-                    <BookOpen className='w-4 h-4' />
-                    Case study
-                    <ArrowUpRight className='w-3.5 h-3.5 group-hover/cs:translate-x-0.5 group-hover/cs:-translate-y-0.5 transition-transform duration-200' />
-                  </button>
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      aria-label={`${project.title} source code`}
-                      className='inline-flex items-center justify-center w-10 h-10 shrink-0 rounded-full border border-line text-ink hover:bg-ink hover:text-paper transition-colors duration-200'
-                    >
-                      <Github className='w-4 h-4' />
-                    </a>
-                  )}
+      {/* Grouped project sections */}
+      <div className='w-full max-w-7xl flex flex-col gap-16 md:gap-20'>
+        {groupsToRender.map((cat) => {
+          const catProjects = projects.filter((p) => p.category === cat.name)
+          return (
+            <div key={cat.name}>
+              {/* Sub-category header */}
+              <div className='mb-6 md:mb-8 flex items-end justify-between gap-4 border-b border-line pb-4'>
+                <div>
+                  <h3 className='font-display text-2xl md:text-3xl font-semibold text-ink tracking-[-0.01em]'>
+                    {cat.name}
+                  </h3>
+                  <p className='text-sm text-muted mt-1.5'>{cat.blurb}</p>
                 </div>
+                <span className='font-mono text-xs text-muted/70 shrink-0'>
+                  {String(catProjects.length).padStart(2, '0')} projects
+                </span>
+              </div>
+              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6'>
+                {catProjects.map((project) => renderCard(project))}
               </div>
             </div>
-          </article>
-        ))}
+          )
+        })}
       </div>
 
       {/* Case Study Modal */}
